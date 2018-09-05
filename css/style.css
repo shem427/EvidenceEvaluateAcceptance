@@ -680,13 +680,12 @@ table.dataTable thead .sorting:after {
 	display: table-cell;
 	border-bottom: 1px #ededed dashed;
 }
-
-/*.portal-item {
-	height: 30px;
-	line-height: 30px;
-	cursor: pointer;
-	border-bottom: 1px #ededed dashed;
+.table-toolbar {
+	margin-bottom:8px;
 }
-.portal-item:hover {
-	background-color: #d9e7f7;
-}*/
+.selection-col {
+	width: 40px;
+}
+.statistics-area {
+	height: 300px;
+}
