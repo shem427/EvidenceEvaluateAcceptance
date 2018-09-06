@@ -6,8 +6,17 @@ $(function() {
     $.poa.statistics = {
         init: function() {
             // init data.
+			var $dateControls = $('.date-control');
             var $beginDate = $('#beginDate');
             var $endDate = $('#endDate');
+			
+			$dateControls.datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: 'zh-CN',
+				todayHighlight: 1,
+				minView: "month",
+				autoclose: 1
+			});
             if (!$beginDate.val()) {
                 $beginDate.val(self._getDate(0, -1, 0));
             }
@@ -23,9 +32,9 @@ $(function() {
         },
         _getDate: function(yearOffset, monthOffset, dayOffset) {
             var now = new Date();
-            var year = now.getFullYear() + yearOffset;
-            var month = now.getMonth() + monthOffset;
-            var day = now.getDay() + dayOffset;
+            var year = now.getUTCFullYear() + yearOffset;
+            var month = now.getUTCMonth() + monthOffset + 1;
+            var day = now.getUTCDate() + dayOffset;
             var ret = year + '-';
             if (month < 10) {
                 ret += '0' + month + '-';

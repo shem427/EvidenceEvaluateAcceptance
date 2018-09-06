@@ -18,12 +18,6 @@
         <!-- Custom CSS -->
         <link href="../css/style.css" rel="stylesheet">
 
-        <!-- DataTables CSS -->
-        <link href="../css/dataTables/dataTables.bootstrap.css" rel="stylesheet">
-
-        <!-- DataTables Responsive CSS -->
-        <link href="../css/dataTables/dataTables.responsive.css" rel="stylesheet">
-
         <!-- Custom Fonts -->
         <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -164,11 +158,6 @@
                                                 <label for="comments">备注</label>
                                                 <textarea id="comments" class="form-control" rows="4" placeholder="备注"></textarea>
                                             </div>
-                                            <div class="form-group">
-                                                <button class="btn btn-default" type="button">填写委托登记表</button>
-                                                <button class="btn btn-default" type="button">填写委托材料</button>
-                                                <button class="btn btn-primary" type="button">申请鉴定</button>
-                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -212,7 +201,7 @@
 										<div class="col-md-12 col-sm-12">
 											<div class="form-group">
 												<label for="institution">委托鉴定机构名称</label>
-												<input type="text" class="form-control" id="institution" value="合肥市公安局电子数据检验鉴定中心" readonly />
+												<input type="text" class="form-control" id="institution" value="合肥市公安局电子数据检验鉴定中心" disabled />
 											</div>
 										</div>
 										<div class="col-md-12 col-sm-12">
@@ -221,16 +210,315 @@
 												<textarea id="caseSummary" class="form-control" rows="4" placeholder="案情摘要"></textarea>
 											</div>
 										</div>
+										<div class="col-md-12 col-sm-12">
+											<div class="form-group">
+												<label>委托项目选择</label>
+												<div class="selection-div checkbox">
+													<label class="checkbox-inline">
+														<input type="checkbox" id="extractData" value="extractData"/>提取固定电子数据
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox" id="recoveryData" value="recoveryData"/>恢复电子数据
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox" id="checkFunction" value="checkFunction"/>检验程序功能
+													</label>
+												</div>
+												<div class="selection-div checkbox">
+													<label class="checkbox-inline">
+														<input type="checkbox" id="crackPassword" value="crackPassword"/>破解电子数据密码
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox" id="analysisData" value="analysisData"/>分析电子数据
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox" id="destroyData" value="destroyData"/>销毁电子数据
+													</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-sm-12">
+											<div class="form-group">
+												<label>方法选择</label>
+												<div class="selection-div checkbox">
+													<label>
+														<input type="checkbox" id="checkMethod1" value="checkMethod1">《电子数据存储介质复制工具要求及检测方法》GA/T 754-2008
+													</label>
+												</div>
+												<div class="selection-div checkbox">
+													<label>
+														<input type="checkbox" id="checkMethod2" value="checkMethod2">《电子数据存储介质写保护要求及检测方法》GA/T 755-2008
+													</label>
+												</div>
+												<div class="selection-div checkbox">
+													<label>
+														<input type="checkbox" id="checkMethod3" value="checkMethod3">《数字化设备证据数据发现提取固定方法》GA/T 756-2008
+													</label>
+												</div>
+												<div class="selection-div checkbox">
+													<label>
+														<input type="checkbox" id="checkMethod4" value="checkMethod4">《程序功能检验方法》GA/T 757-2008
+													</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-sm-12">
+											<div class="form-group">
+												<label>结果要求</label>
+												<div class="selection-div">
+													<label class="checkbox-inline">
+														<input type="checkbox" id="requireReport" value="requireReport">出具鉴定报告书
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox" id="requireOpinion" value="requireOpinion">出具鉴定意见书
+													</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-sm-12">
+											<div class="form-group">
+												<label for="otherComment">其他要求说明</label>
+												<textarea id="otherComment" class="form-control" rows="4" placeholder="其他要求说明"></textarea>
+											</div>
+										</div>
 									</div>
 								</form>
 							</div>
 						</div>
                     </div>
-                </div>
+					<div class="panel panel-warning">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#appendixInfo">
+									附录：委托提交的材料清单
+								</a>
+							</h4>
+						</div>
+						<div id="appendixInfo" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										第1类：提交的文件资料
+									</div>
+									<div class="panel-body">
+										<table class="table table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>序号</th>
+													<th>文件种类</th>
+													<th>文件名称</th>
+													<th>数量</th>
+													<th>备注（文号等说明）</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>1</td>
+													<td>受理/立案决定<br/>法律文书</td>
+													<td><textarea class="form-control" rows="4"></textarea></td>
+													<td><textarea class="form-control" rows="4" placeholder="单位填[页/件/套]"></textarea></td>
+													<td><textarea class="form-control" rows="4"></textarea></td>
+												</tr>
+												<tr>
+													<td>2</td>
+													<td>检材来源<br />法律文书</td>
+													<td><textarea class="form-control" rows="4"></textarea></td>
+													<td><textarea class="form-control" rows="4" placeholder="单位填[页/件/套]"></textarea></td>
+													<td><textarea class="form-control" rows="4"></textarea></td>
+												</tr>
+												<tr>
+													<td>3</td>
+													<td>其他（参考材料）</td>
+													<td><textarea class="form-control" rows="4"></textarea></td>
+													<td><textarea class="form-control" rows="4" placeholder="单位填[页/件/套]"></textarea></td>
+													<td><textarea class="form-control" rows="4"></textarea></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										第2类：检材类（JC)
+									</div>
+									<div class="panel-body">
+										<div class="table-toolbar">
+											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMaterialModal"><i class="fa fa-plus"></i>添加</button>
+											<button type="button" class="btn btn-default" data-toggle="modal" data-target="#updateMaterialModal"><i class="fa fa-pencil"></i>编辑</button>
+											<button type="button" class="btn btn-default"><i class="fa fa-trash"></i>删除</button>
+										</div>
+										<table class="table table-bordered table-hover">
+											<thead>
+												<tr>
+													<th class="selection-col">&nbsp;</th>
+													<th>序号</th>
+													<th>检材种类</th>
+													<th>数量</th>
+													<th>特征描述及外部<br/>异常状态描述</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td class="selection-col"><input type="checkbox" /></td>
+													<td>1</td>
+													<td>台式主机</td>
+													<td>1套</td>
+													<td>&nbsp;</td>
+												</tr>
+												<tr>
+													<td class="selection-col"><input type="checkbox" /></td>
+													<td>2</td>
+													<td>硬盘</td>
+													<td>1件</td>
+													<td>表面积满灰尘</td>
+												</tr>
+												<tr>
+													<td class="selection-col"><input type="checkbox" /></td>
+													<td>3</td>
+													<td>多媒体存储卡</td>
+													<td>2件</td>
+													<td>表面有划痕</td>
+												</tr>
+												<tr>
+													<td class="selection-col"><input type="checkbox" /></td>
+													<td>4</td>
+													<td>笔记本电脑</td>
+													<td>3套</td>
+													<td>外观完好</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="table-toolbar">
+					<button class="btn btn-primary">提交申请</button>
+				</div>
             </div>
             <!-- /#page-wrapper -->
         </div>
         <!-- /#wrapper -->
+		
+		<!-- addMaterialModal -->
+		<div class="modal fade" id="addMaterialModal" tabindex="-1" role="dialog" aria-labelledby="addMaterialModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="myModalLabel">
+							添加检材
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form">
+							<div class="form-group">
+								<label>检材种类</label>
+								<select id="materialType" class="form-control">
+									<option>台式主机</option>
+									<option>硬盘</option>
+									<option>光盘</option>
+									<option>闪存</option>
+									<option>磁带</option>
+									<option>笔记本电脑</option>
+									<option>多媒体存储卡</option>
+									<option>手机</option>
+									<option>SIM卡</option>
+									<option>数码设备（录音笔、相机、摄像机等）</option>
+									<option value="other">其他</option>
+								</select>
+							</div>
+							<div class="form-group" id="otherMaterialTypeArea">
+								<label>其他检材</label>
+								<input type="text" class="form-control" placeholder="请输入其他建材种类名称">
+							</div>
+							<div class="form-group">
+								<label>数量</label>
+								<input type="number" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>单位</label>
+								<select class="form-control">
+									<option>件</option>
+									<option>套</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>特征描述及外部异常状态描述</label>
+								<textarea class="form-control" rows="4"></textarea>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		
+		<!-- updateMaterialModal -->
+		<div class="modal fade" id="updateMaterialModal" tabindex="-1" role="dialog" aria-labelledby="updateMaterialModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="myModalLabel">
+							添加检材
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form">
+							<div class="form-group">
+								<label>检材种类</label>
+								<select id="materialType" class="form-control">
+									<option>台式主机</option>
+									<option selected>硬盘</option>
+									<option>光盘</option>
+									<option>闪存</option>
+									<option>磁带</option>
+									<option>笔记本电脑</option>
+									<option>多媒体存储卡</option>
+									<option>手机</option>
+									<option>SIM卡</option>
+									<option>数码设备（录音笔、相机、摄像机等）</option>
+									<option value="other">其他</option>
+								</select>
+							</div>
+							<div class="form-group" id="otherMaterialTypeArea">
+								<label>其他检材</label>
+								<input type="text" class="form-control" placeholder="请输入其他建材种类名称" value="3.5寸软盘">
+							</div>
+							<div class="form-group">
+								<label>数量</label>
+								<input type="number" class="form-control" value="5">
+							</div>
+							<div class="form-group">
+								<label>单位</label>
+								<select class="form-control">
+									<option>件</option>
+									<option selected>套</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>特征描述及外部异常状态描述</label>
+								<textarea class="form-control" rows="4">外观完好，其中一张表面潮湿。</textarea>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
 
         <!-- jQuery -->
         <script src="../js/jquery.min.js"></script>
@@ -243,6 +531,12 @@
 
         <!-- Custom Theme JavaScript -->
         <script src="../js/startmin.js"></script>
-        
+		
+        <script src="../scripts/applyIdentification.js"></script>
+		<script>
+			$(function() {
+				$.poa.apply.init();
+			});
+		</script>
     </body>
 </html>

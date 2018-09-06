@@ -685,3 +685,6 @@ table.dataTable thead .sorting:after {
 .statistics-area {
 	height: 300px;
 }
+.selection-div {
+	padding-left: 16px;
+}
