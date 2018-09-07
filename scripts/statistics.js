@@ -6,9 +6,10 @@ $(function() {
     $.poa.statistics = {
         init: function() {
             // init data.
-			var $dateControls = $('.date-control');
+			var $btnDate = $('.btn-date');
             var $beginDate = $('#beginDate');
             var $endDate = $('#endDate');
+			var $dateControls = $('#beginDate, #endDate');
 			
 			$dateControls.datetimepicker({
 				format: 'yyyy-mm-dd',
@@ -17,6 +18,12 @@ $(function() {
 				minView: "month",
 				autoclose: 1
 			});
+			$btnDate.click(function() {
+				var $this = $(this);
+				var dateControl = $this.parent().prev();
+				dateControl.datetimepicker('show');
+			});
+
             if (!$beginDate.val()) {
                 $beginDate.val(self._getDate(0, -1, 0));
             }

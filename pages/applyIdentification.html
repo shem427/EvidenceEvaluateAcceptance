@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +11,7 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="../css/bootstrap.min.css" rel="stylesheet">
+		<link href="../css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 
         <!-- MetisMenu CSS -->
         <link href="../css/metisMenu.min.css" rel="stylesheet">
@@ -126,7 +127,14 @@
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label for="caseTime">发案时间</label>
-                                                <input type="datetime-local" class="form-control" id="caseTime" placeholder="发案时间" />
+												<div class="input-group">
+													<input type="text" class="form-control" id="caseTime" placeholder="发案时间" readonly />
+													<span class="input-group-btn">
+														<button class="btn btn-default btn-date" type="button">
+															<span class="fa fa-calendar"></span>
+														</button>
+													</span>
+												</div>
                                             </div>
                                         </div>
                                         <div class="col-md-8 col-sm-12">
@@ -144,7 +152,7 @@
                                         <div class="col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label for="caseBrief">简要案情</label>
-                                                <textarea id="caseBrief" class="form-control" rows="4" placeholder="委托单位"></textarea>
+                                                <textarea id="caseBrief" class="form-control" rows="4" placeholder="简要案情"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-12 col-sm-12">
@@ -354,7 +362,7 @@
 													<th>序号</th>
 													<th>检材种类</th>
 													<th>数量</th>
-													<th>特征描述及外部<br/>异常状态描述</th>
+													<th>特征描述及外部异常状态描述</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -408,7 +416,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-							&times;
+							<span class="fa fa-times"></span>
 						</button>
 						<h4 class="modal-title" id="myModalLabel">
 							添加检材
@@ -418,7 +426,7 @@
 						<form role="form">
 							<div class="form-group">
 								<label>检材种类</label>
-								<select id="materialType" class="form-control">
+								<select class="materialType form-control">
 									<option>台式主机</option>
 									<option>硬盘</option>
 									<option>光盘</option>
@@ -432,7 +440,7 @@
 									<option value="other">其他</option>
 								</select>
 							</div>
-							<div class="form-group" id="otherMaterialTypeArea">
+							<div class="form-group otherMaterialTypeArea">
 								<label>其他检材</label>
 								<input type="text" class="form-control" placeholder="请输入其他建材种类名称">
 							</div>
@@ -467,7 +475,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-							&times;
+							<span class="fa fa-times"></span>
 						</button>
 						<h4 class="modal-title" id="myModalLabel">
 							添加检材
@@ -477,7 +485,7 @@
 						<form role="form">
 							<div class="form-group">
 								<label>检材种类</label>
-								<select id="materialType" class="form-control">
+								<select class="materialType form-control">
 									<option>台式主机</option>
 									<option selected>硬盘</option>
 									<option>光盘</option>
@@ -491,7 +499,7 @@
 									<option value="other">其他</option>
 								</select>
 							</div>
-							<div class="form-group" id="otherMaterialTypeArea">
+							<div class="form-group otherMaterialTypeArea">
 								<label>其他检材</label>
 								<input type="text" class="form-control" placeholder="请输入其他建材种类名称" value="3.5寸软盘">
 							</div>
@@ -525,6 +533,8 @@
 
         <!-- Bootstrap Core JavaScript -->
         <script src="../js/bootstrap.min.js"></script>
+		<script src="../js/bootstrap-datetimepicker.min.js"></script>
+		<script src="../js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 
         <!-- Metis Menu Plugin JavaScript -->
         <script src="../js/metisMenu.min.js"></script>
