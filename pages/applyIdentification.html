@@ -309,6 +309,11 @@
 										第1类：提交的文件资料
 									</div>
 									<div class="panel-body">
+										<div class="table-toolbar">
+											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFileModal"><i class="fa fa-plus"></i>添加</button>
+											<button type="button" class="btn btn-default"><i class="fa fa-pencil"></i>编辑</button>
+											<button type="button" class="btn btn-default"><i class="fa fa-trash"></i>删除</button>
+										</div>
 										<table class="table table-bordered table-hover">
 											<thead>
 												<tr>
@@ -323,23 +328,23 @@
 												<tr>
 													<td>1</td>
 													<td>受理/立案决定<br/>法律文书</td>
-													<td><textarea class="form-control" rows="4"></textarea></td>
-													<td><textarea class="form-control" rows="4" placeholder="单位填[页/件/套]"></textarea></td>
-													<td><textarea class="form-control" rows="4"></textarea></td>
+													<td><select class="form-control" size="4" multiple></select></td>
+													<td><select class="form-control" size="4" multiple></select></td>
+													<td><select class="form-control" size="4" multiple></select></td>
 												</tr>
 												<tr>
 													<td>2</td>
 													<td>检材来源<br />法律文书</td>
-													<td><textarea class="form-control" rows="4"></textarea></td>
-													<td><textarea class="form-control" rows="4" placeholder="单位填[页/件/套]"></textarea></td>
-													<td><textarea class="form-control" rows="4"></textarea></td>
+													<td><select class="form-control" size="4" multiple></select></td>
+													<td><select class="form-control" size="4" multiple></select></td>
+													<td><select class="form-control" size="4" multiple></select></td>
 												</tr>
 												<tr>
 													<td>3</td>
 													<td>其他（参考材料）</td>
-													<td><textarea class="form-control" rows="4"></textarea></td>
-													<td><textarea class="form-control" rows="4" placeholder="单位填[页/件/套]"></textarea></td>
-													<td><textarea class="form-control" rows="4"></textarea></td>
+													<td><select class="form-control" size="4" multiple></select></td>
+													<td><select class="form-control" size="4" multiple></select></td>
+													<td><select class="form-control" size="4" multiple></select></td>
 												</tr>
 											</tbody>
 										</table>
@@ -527,6 +532,55 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal -->
 		</div>
+		
+		<!-- addFileModal -->
+		<div class="modal fade" id="addFileModal" tabindex="-1" role="dialog" aria-labelledby="addFileModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="fa fa-times"></span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">
+							添加文件资料
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form">
+							<div class="form-group">
+								<label>文件种类</label>
+								<select class="materialType form-control">
+									<option>受理/立案决定法律文书</option>
+									<option>检材来源法律文书</option>
+									<option>其他（参考材料）</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>数量</label>
+								<input type="number" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>单位</label>
+								<select class="form-control">
+									<option>页</option>
+									<option>件</option>
+									<option>套</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>备注</label>
+								<textarea class="form-control" rows="4"></textarea>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		<!-- updateFileModal -->
 
         <!-- jQuery -->
         <script src="../js/jquery.min.js"></script>

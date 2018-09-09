@@ -10,6 +10,8 @@ $(function() {
 			// button
 			var revertApplication = $('#revertApplication');
 			var back = $('#back');
+			
+			var fileSelect = $('.fileSelect');
 
 			applicationDetail.hide();
 			applicationLink.click(function(e) {
@@ -19,6 +21,11 @@ $(function() {
 			});
 			revertApplication.click(self._buttonEvent);
 			back.click(self._buttonEvent);
+			
+			fileSelect.scroll(function() {
+				var pos = this.scrollTop;
+				fileSelect.not($(this)).scrollTop(pos);
+			});
 			
 		},
 		_buttonEvent: function() {
