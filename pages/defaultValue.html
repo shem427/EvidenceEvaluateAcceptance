@@ -85,14 +85,14 @@
                                 <a href="users.html"><i class="fa fa-user fa-fw"></i>用户管理</a>
                             </li>
                             <li>
-                                <a href="statistics.html" class="active"><i class="fa fa-bar-chart fa-fw"></i>统计分析</a>
+                                <a href="statistics.html"><i class="fa fa-bar-chart fa-fw"></i>统计分析</a>
                             </li>
                             <li>
                                 <a href="#"><i class="fa fa-gear fa-fw"></i>设置<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li><a href="changePassword.html">修改密码</a></li>
                                     <li><a href="updateProfile.html">修改个人资料</a></li>
-                                    <li><a href="defaultValue.html">默认值设置</a></li>
+									<li><a href="defaultValue.html" class="active">默认值设置</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -102,74 +102,33 @@
 			<div id="page-wrapper">
 				<div class="row">
 					<div class="col-lg-12">
-						<h3 class="page-header">统计分析</h3>
+						<h3 class="page-header">默认值设置</h3>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-lg-12 col-md-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">时间区间</div>
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-lg-3 col-md-3">
-										<div class="form-group">
-											<label>开始日期</label>
-											<div class="input-group">
-												<input type="date" class="form-control" placeholder="开始日期" id="beginDate" readonly />
-												<span class="input-group-btn">
-													<button class="btn btn-default btn-date" type="button">
-														<span class="fa fa-calendar"></span>
-													</button>
-												</span>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-3 col-md-3">
-										<div class="form-group">
-											<label>结束日期</label>
-											<div class="input-group">
-												<input type="date" class="form-control" placeholder="结束日期" id="endDate" readonly />
-												<span class="input-group-btn">
-													<button class="btn btn-default btn-date" type="button">
-														<span class="fa fa-calendar"></span>
-													</button>
-												</span>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-6 col-md-5">
-										<div class="form-group">
-											<label>&nbsp;</label>
-											<div>
-												<button class="btn btn-primary" id="dataCount">统计</button>
-											</div>
-										</div>
-									</div>
-								</div>
+					<div class="col-lg-12">
+						<form role="form">
+							<div class="form-group">
+								<label class="control-label">委托方名称</label>
+								<input type="text" class="form-control" placeholder="请输入默认委托方名称" />
 							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-8 col-md-12">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<i class="fa fa-bar-chart fa-fw"></i>&nbsp;区县别申请数统计
+							<div class="form-group">
+								<label class="control-label">委托方（邮寄）地址</label>
+								<input type="text" class="form-control" placeholder="请输入默认委托方（邮寄）地址" />
 							</div>
-							<div class="panel-body">
-								<div id="region-chart" class="statistics-area"></div>
+							<div class="form-group">
+								<label class="control-label">邮政编码</label>
+								<input type="text" class="form-control" placeholder="请输入默认邮政编码" />
 							</div>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-12">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<i class="fa fa-pie-chart fa-fw"></i>&nbsp;证物类型别申请数统计
+							<div class="form-group">
+								<label class="control-label">传真电话</label>
+								<input type="text" class="form-control" placeholder="请输入默认传真电话" />
 							</div>
-							<div class="panel-body">
-								<div id="type-chart" class="statistics-area"></div>	
+							<div class="form-group">
+								<button type="reset" class="btn btn-default">重置</button>
+								<button type="submit" class="btn btn-primary">保存</button>
 							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
