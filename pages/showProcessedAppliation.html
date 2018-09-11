@@ -75,6 +75,7 @@
                                     <li><a href="showApplicationHistory.html">申请历史</a></li>
                                     <li><a href="showPendingApplication.html">待处理申请</a></li>
                                     <li><a href="showProcessedAppliation.html" class="active">已处理申请</a></li>
+									<li><a href="applicationList.html">申请一览</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -186,31 +187,31 @@
                                     <div class="col-xs-1 bs-wizard-step complete">
                                         <div class="text-center bs-wizard-stepnum">办案警员</div>
                                         <div class="progress"><div class="progress-bar"></div></div>
-                                        <a href="#" class="bs-wizard-dot"></a>
+                                        <a href="#" class="bs-wizard-dot" data-toggle="modal" data-target="#approveModal"></a>
                                         <div class="bs-wizard-info text-center"></div>
                                     </div>
                                     <div class="col-xs-3 bs-wizard-step complete"><!-- complete -->
                                         <div class="text-center bs-wizard-stepnum">办案单位</div>
-                                        <div class="progress"><div class="progress-bar">同意申请</div></div>
-                                        <a href="#" class="bs-wizard-dot"></a>
-                                        <div class="bs-wizard-info text-center"></div>
+                                        <div class="progress"><div class="progress-bar"></div></div>
+                                        <a href="#" class="bs-wizard-dot" data-toggle="modal" data-target="#approveModal"></a>
+                                        <div class="bs-wizard-info text-center">同意申请</div>
                                     </div>                
                                     <div class="col-xs-3 bs-wizard-step active"><!-- active -->
                                         <div class="text-center bs-wizard-stepnum">办案主管单位领导</div>
                                         <div class="progress"><div class="progress-bar"></div></div>
-                                        <a href="#" class="bs-wizard-dot"></a>
+                                        <a href="#" class="bs-wizard-dot" data-toggle="modal" data-target="#approveModal"></a>
                                         <div class="bs-wizard-info text-center"></div>
                                     </div>
                                     <div class="col-xs-3 bs-wizard-step disabled"><!-- active -->
                                         <div class="text-center bs-wizard-stepnum">网安支队领导</div>
                                         <div class="progress"><div class="progress-bar"></div></div>
-                                        <a href="#" class="bs-wizard-dot"></a>
+                                        <a href="#" class="bs-wizard-dot" data-toggle="modal" data-target="#approveModal"></a>
                                         <div class="bs-wizard-info text-center"></div>
                                     </div>
 									<div class="col-xs-2 bs-wizard-step disabled"><!-- active -->
 										<div class="text-center bs-wizard-stepnum">结束</div>
 										<div class="progress"><div class="progress-bar"></div></div>
-										<a href="#" class="bs-wizard-dot"></a>
+										<a href="#" class="bs-wizard-dot" data-toggle="modal" data-target="#approveModal"></a>
 										<div class="bs-wizard-info text-center"></div>
 									</div>
                                 </div>
@@ -607,6 +608,44 @@
                 </div>
             </div>
         </div>
+		<!-- Approval Detail -->
+		<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							<span class="fa fa-times"></span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">
+							节点详情
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form">
+							<div class="form-group">
+								<label class="control-label">处理者</label>
+								<input type="text" class="form-control" value="张三" readonly />
+							</div>
+							<div class="form-group">
+								<label class="control-label">处理时间</label>
+								<input type="text" class="form-control" value="2018-08-22 11:22" readonly />
+							</div>
+							<div class="form-group">
+								<label class="control-label">处理类型</label>
+								<input type="text" class="form-control" value="审批" readonly />
+							</div>
+							<div class="form-group">
+								<label class="control-label">处理意见</label>
+								<input type="text" class="form-control" value="同意提交" readonly />
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
         <!-- jQuery -->
         <script src="../js/jquery.min.js"></script>
 

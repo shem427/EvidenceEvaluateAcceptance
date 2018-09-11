@@ -31,6 +31,11 @@ $(function() {
 					otherMaterialTypeArea.hide();
 				}
 			});
+			
+			$('.uploadFile').change(function() {
+				var path = $(this).val();
+				$(this).parent().next().text(path.replace(/^.*[\\\/]/, ''));
+			});
 		}
 	};
 });
