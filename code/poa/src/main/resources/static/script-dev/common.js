@@ -185,6 +185,37 @@ $(function() {
                     storage[name] = value;
                 }
             }
+        },
+        tree: {
+            create: function(options, data) {
+                var zNodes;
+                var $tree = $(options.selector);
+                var setting = {
+                    check: {
+                        enable: options.checkEnabled !== false
+                    },
+                    edit: {
+                        enable: options.editEnabled !== false
+                    },
+                    view: {
+                        selectedMulti: options.selectedMulti !== false
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true,
+                            idKey: 'id',
+                            pIdKey: 'pId',
+                            rootPId: 0
+                        }
+                    }
+                };
+                if (data) {
+                    zNodes = data;
+                } else {
+                    zNodes = [];
+                }
+                $.fn.zTree.init($tree, setting, zNodes);
+            }
         }
     };
 });

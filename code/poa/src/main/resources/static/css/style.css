@@ -713,11 +713,6 @@ table.dataTable thead .sorting:after {
     display: block;
 }
 
-.login-back {
-	background:url(../img/back.png) no-repeat;
-	background-size:100%100%;
-}
-
 /*Form Wizard*/
 .bs-wizard {padding: 0 0 10px 0;}
 .bs-wizard > .bs-wizard-step {padding: 0; position: relative;}
