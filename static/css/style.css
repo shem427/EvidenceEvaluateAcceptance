@@ -718,6 +718,28 @@ table.dataTable thead .sorting:after {
 	background-size:100%100%;
 }
 
+.modal-alert {
+	background-color: #ffffce;
+}
+
+.modal-error {
+	background-color: #f9e3e1;
+}
+
+.modal-confirm {
+	background-color: #cef3f7;
+}
+
+.modal-dialog .modal-header {
+	padding-top: 12px;
+	padding-bottom: 8px;
+}
+
+.modal-dialog .modal-footer {
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
 /*Form Wizard*/
 .bs-wizard {padding: 0 0 10px 0;}
 .bs-wizard > .bs-wizard-step {padding: 0; position: relative;}

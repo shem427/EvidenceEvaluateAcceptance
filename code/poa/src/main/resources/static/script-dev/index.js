@@ -22,25 +22,25 @@ $(function() {
             // 密码修改事件
             var changePassword = function(e) {
                 e.preventDefault();
-                self._getWrapperPage(contextPath + 'setting/changePassword');
+                self._getWrapperPage('setting/changePassword');
             };
 
             // 首页LINK
             $dashboardLink.click(function(e) {
                 e.preventDefault();
-                self._getWrapperPage(contextPath + 'dashboard/index');
+                self._getWrapperPage('dashboard/index');
             });
 
             // 用户管理LINK
             $userLink.click(function(e) {
                 e.preventDefault();
-                self._getWrapperPage(contextPath + 'user/index');
+                self._getWrapperPage('user/index');
             });
 
             // 组织管理LINK
             $deptLink.click(function(e) {
                 e.preventDefault();
-                self._getWrapperPage(contextPath + 'dept/index');
+                self._getWrapperPage('dept/index');
             });
 
             // 密码修改LINK
