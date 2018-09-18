@@ -30,8 +30,6 @@ $(function() {
             _message: function(type, message, title, callback) {
                 var dialog = $("#poaMsgModal"),
                     modalType = type.toLowerCase(),
-                    callbackYes,
-                    callbackNo,
                     dialogHtml,
                     dialogHeader,
                     dialogContent,
