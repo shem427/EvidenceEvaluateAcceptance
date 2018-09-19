@@ -8,6 +8,8 @@ $(function() {
         CANCEL: '取消',
 
         YES: '是',
-        NO: '否'
+        NO: '否',
+
+        TABLE_NO_DATA: '没有数据'
     };
 });
