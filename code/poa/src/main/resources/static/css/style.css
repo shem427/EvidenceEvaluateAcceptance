@@ -733,3 +733,21 @@ table.dataTable thead .sorting:after {
 .bs-wizard > .bs-wizard-step:last-child  > .progress {width: 50%;}
 .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
 /*END Form Wizard*/
+
+.modal-alert {
+    background-color: #ffffce;
+}
+.modal-error {
+    background-color: #f9e3e1;
+}
+.modal-confirm {
+    background-color: #fdfdfd;
+}
+div.modal-header {
+    padding-top: 12px;
+    padding-bottom: 8px;
+}
+div.modal-footer {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}

@@ -45,7 +45,6 @@ $(function() {
                     "    <div class='modal-dialog'>" +
                     "        <div class='modal-content'>" +
                     "            <div class='modal-header'>" +
-                    "                <button type='button' class='close' data-dismiss='modal' aria-hidden='true'><span class='fa fa-times'></span></button>" +
                     "                <h4 class='modal-title' id='poaMsgModalLabel'></h4>" +
                     "            </div>" +
                     "            <div class='modal-body'></div>" +
@@ -75,7 +74,7 @@ $(function() {
                         dialog.modal('hide');
                     });
                 } else if (modalType === 'error') {
-                    dialogHeader.html('<i class="fa fa-close fa-fw"></i>' + title);
+                    dialogHeader.html('<i class="fa fa-window-close-o fa-fw"></i>' + title);
                     dialogContent.addClass('modal-error');
                     dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">' + $.poa.resource.OK + '</button>');
                     dialogFooter.children('button').click(function() {
