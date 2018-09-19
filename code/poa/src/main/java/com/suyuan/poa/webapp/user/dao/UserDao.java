@@ -41,20 +41,20 @@ public class UserDao extends CommonDao<UserBean> {
     public UserBean getUserByPoliceNumber(String policeNumber) {
         StringBuilder sbSQL = new StringBuilder();
         sbSQL.append("SELECT ");
-        sbSQL.append(DBConstant.USER_ID).append(",");
-        sbSQL.append(DBConstant.USER_NAME).append(",");
-        sbSQL.append(DBConstant.POLICE_NUMBER).append(",");
-        sbSQL.append(DBConstant.PHONE_NUMBER).append(",");
-        sbSQL.append(DBConstant.USER_ROLE).append(",");
-        sbSQL.append(DBConstant.PASSWORD).append(",");
-        sbSQL.append(DBConstant.DEPT_ID).append(",");
-        sbSQL.append(DBConstant.DEPT_NAME);
+        sbSQL.append("U.").append(DBConstant.USER_ID).append(",");
+        sbSQL.append("U.").append(DBConstant.USER_NAME).append(",");
+        sbSQL.append("U.").append(DBConstant.POLICE_NUMBER).append(",");
+        sbSQL.append("U.").append(DBConstant.PHONE_NUMBER).append(",");
+        sbSQL.append("U.").append(DBConstant.USER_ROLE).append(",");
+        sbSQL.append("U.").append(DBConstant.PASSWORD).append(",");
+        sbSQL.append("U.").append(DBConstant.DEPT_ID).append(",");
+        sbSQL.append("D.").append(DBConstant.DEPT_NAME);
 
         sbSQL.append(" FROM ");
         sbSQL.append(DBConstant.USER_TABLE).append(" U,").append(DBConstant.DEPT_TABLE).append(" D");
         sbSQL.append(" WHERE ");
         sbSQL.append("U.").append(DBConstant.DEPT_ID).append("=").append("D.").append(DBConstant.DEPT_ID);
-        sbSQL.append("U.").append(DBConstant.POLICE_NUMBER).append("=?");
+        sbSQL.append(" AND U.").append(DBConstant.POLICE_NUMBER).append("=?");
 
         UserBean bean = jdbcTemplate.query(sbSQL.toString(),
                 new String[] {policeNumber}, rs -> {
