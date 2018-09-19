@@ -54,12 +54,13 @@ $(function() {
                     "    </div>" +
                     "</div>";
                 dialog = $(dialogHtml);
-                dialogHeader = dialog.children('h4');
-                dialogBody = dialog.children(".modal-body");
-                dialogContent = dialog.children(".modal-content");
-                dialogFooter = dialog.children(".modal-footer");
                 // create dialog
                 $("body").append(dialog);
+
+                dialogHeader = dialog.find('h4');
+                dialogBody = dialog.find(".modal-body");
+                dialogContent = dialog.find(".modal-content");
+                dialogFooter = dialog.find(".modal-footer");
 
                 // config dialog
                 dialogBody.html(message);
@@ -260,7 +261,7 @@ $(function() {
                     cardView: false,
                     detailView: false,
                     columns: options.columns,
-                    undefinedText: $.poa.resource.TABLE_NO_DATA
+                    undefinedText: $.poa.resource.TABLE_NO_DATA,
                     rowStyle: options.rowStyle,
                     onLoadSuccess: options.onLoadSuccess,
                     onLoadError: options.onLoadError

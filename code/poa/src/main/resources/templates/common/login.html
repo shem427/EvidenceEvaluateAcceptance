@@ -30,6 +30,9 @@
         <script th:src="@{/js/html5shiv.js}"></script>
         <script th:src="@{/js/respond.min.js}"></script>
         <![endif]-->
+        <script th:inline="javascript">
+            var contextPath = /*[[@{/}]]*/ 'test';
+        </script>
     </head>
     <body class="login-back">
         <div class="system-logo">电子物证检验鉴定受理平台</div>
@@ -69,6 +72,9 @@
         <script th:src="@{/js/metisMenu.min.js}"></script>
         <!-- Custom Theme JavaScript -->
         <script th:src="@{/js/startmin.js}"></script>
+
+        <script th:src="@{/script/common.js}"></script>
+        <script th:src="@{/i18n/resource_zh.js}"></script>
 
         <script>
             $(function() {
