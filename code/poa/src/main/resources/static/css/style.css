@@ -656,41 +656,41 @@ table.dataTable thead .sorting:after {
     background-color: #a94442; /* active bg color */
 }
 .system-title {
-	font-size: 18px;
+    font-size: 18px;
 }
 .portal-area {
-	height:250px;
-	overflow-y: auto;
+    height:250px;
+    overflow-y: auto;
 }
 .portal-block {
-	display: table;
-	width: 100%
+    display: table;
+    width: 100%
 }
 .portal-item-row {
-	display: table-row;
-	height: 30px;
-	line-height: 30px;
-	cursor: pointer;
+    display: table-row;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
 }
 .portal-item-row:hover {
-	background-color: #d9e7f7;
+    background-color: #d9e7f7;
 }
 .portal-item-cell {
-	display: table-cell;
-	border-bottom: 1px #ededed dashed;
+    display: table-cell;
+    border-bottom: 1px #ededed dashed;
 }
 .table-toolbar {
-	margin-bottom:8px;
+    margin-bottom:8px;
 }
 .selection-col {
-	width: 40px;
-	text-align: center;
+    width: 40px;
+    text-align: center;
 }
 .statistics-area {
-	height: 300px;
+    height: 300px;
 }
 .selection-div {
-	padding-left: 16px;
+    padding-left: 16px;
 }
 
 .btn-file {
@@ -733,3 +733,21 @@ table.dataTable thead .sorting:after {
 .bs-wizard > .bs-wizard-step:last-child  > .progress {width: 50%;}
 .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
 /*END Form Wizard*/
+
+.modal-alert {
+    background-color: #ffffce;
+}
+.modal-error {
+    background-color: #f9e3e1;
+}
+.modal-confirm {
+    background-color: #fdfdfd;
+}
+div.modal-header {
+    padding-top: 12px;
+    padding-bottom: 8px;
+}
+div.modal-footer {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}

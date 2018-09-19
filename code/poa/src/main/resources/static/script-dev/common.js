@@ -45,7 +45,6 @@ $(function() {
                     "    <div class='modal-dialog'>" +
                     "        <div class='modal-content'>" +
                     "            <div class='modal-header'>" +
-                    "                <button type='button' class='close' data-dismiss='modal' aria-hidden='true'><span class='fa fa-times'></span></button>" +
                     "                <h4 class='modal-title' id='poaMsgModalLabel'></h4>" +
                     "            </div>" +
                     "            <div class='modal-body'></div>" +
@@ -54,17 +53,18 @@ $(function() {
                     "    </div>" +
                     "</div>";
                 dialog = $(dialogHtml);
-                dialogHeader = dialog.children('h4');
-                dialogBody = dialog.children(".modal-body");
-                dialogContent = dialog.children(".modal-content");
-                dialogFooter = dialog.children(".modal-footer");
                 // create dialog
                 $("body").append(dialog);
 
+                dialogHeader = dialog.find('h4');
+                dialogBody = dialog.find(".modal-body");
+                dialogContent = dialog.find(".modal-content");
+                dialogFooter = dialog.find(".modal-footer");
+
                 // config dialog
-                dialogHeader.html(title);
                 dialogBody.html(message);
                 if (modalType === 'alert') {
+                    dialogHeader.html('<i class="fa fa-warning fa-fw"></i>' + title);
                     dialogContent.addClass('modal-alert');
                     dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">' + $.poa.resource.OK + '</button>');
                     dialogFooter.children('button').click(function() {
@@ -74,6 +74,7 @@ $(function() {
                         dialog.modal('hide');
                     });
                 } else if (modalType === 'error') {
+                    dialogHeader.html('<i class="fa fa-window-close-o fa-fw"></i>' + title);
                     dialogContent.addClass('modal-error');
                     dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">' + $.poa.resource.OK + '</button>');
                     dialogFooter.children('button').click(function() {
@@ -83,6 +84,7 @@ $(function() {
                         dialog.modal('hide');
                     });
                 } else if (modalType === 'confirm') {
+                    dialogHeader.html('<i class="fa fa-question-circle-o fa-fw"></i>' + title);
                     dialogContent.addClass('modal-confirm');
                     dialogFooter.append('<button type="button" class="btn btn-sm btn-default">' + $.poa.resource.NO + '</button>');
                     dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">' + $.poa.resource.YES + '</button>');
@@ -145,7 +147,7 @@ $(function() {
         },
         ajaxFileUpload: function(options, importData) {
             var ajaxOptions = {
-                url : options.url,
+                url : $.poa.contextPath + options.url,
                 data : importData,
                 secureuri : false,
                 fileElementId : options.fileId,
@@ -205,7 +207,15 @@ $(function() {
                             pIdKey: 'pId',
                             rootPId: 0
                         }
-                    }
+                    },
+                    async: {
+                        url: $.poa.contextPath + options.url,
+                        type: options.type || 'get',
+                        enable: options.url,
+                        dataType: 'json',
+                        dataFilter: options.dataFilter || null
+                    },
+                    callback: options.callback
                 };
                 if (data) {
                     zNodes = data;
@@ -213,6 +223,48 @@ $(function() {
                     zNodes = [];
                 }
                 $.fn.zTree.init($tree, setting, zNodes);
+            }
+        },
+        table: {
+            create: function(options) {
+                var $table = $(options.selector);
+                $table.bootstrapTable({
+                    url: $.poa.contextPath + options.url,
+                    method: options.method || 'get',
+                    toolbar: options.toolbar || '#toolbar',
+                    striped: true,
+                    cache: options.cache === true,
+                    pagination: options.pagination !== false,
+                    sortable: options.sortable !== false,
+                    sortOrder: 'asc',
+                    queryParams: function(params) {
+                        var qParam = {
+                            limit: params.limit,
+                            offset:params.offset
+                        };
+                        return qParam;
+                    },
+                    sidePagination: 'server',
+                    pageNumber: 1,
+                    pageSize: 10,
+                    pageList: options.pageList || [10, 25, 50, 100],
+                    search: options.search === true,
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    strictSearch: true,
+                    showColumns: true,
+                    showRefresh: options.showRefresh !== false,
+                    clickToSelect: false,
+                    uniqueId: 'no',
+                    showToggle: false,
+                    cardView: false,
+                    detailView: false,
+                    columns: options.columns,
+                    undefinedText: $.poa.resource.TABLE_NO_DATA,
+                    rowStyle: options.rowStyle,
+                    onLoadSuccess: options.onLoadSuccess,
+                    onLoadError: options.onLoadError
+                });
             }
         }
     };
