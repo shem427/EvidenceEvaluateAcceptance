@@ -102,7 +102,8 @@ $(function() {
                     });
                 }
                 dialog.modal({
-                    keyboard: false
+                    keyboard: false,
+                    backdrop: false
                 });
                 dialog.on('hidden.bs.modal', function() {
                     dialog.empty().remove();
