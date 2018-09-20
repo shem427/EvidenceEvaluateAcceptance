@@ -19,27 +19,37 @@ $(function() {
             var $deptLink = $('#deptLink');
             var $userLink = $('#userLink');
 
+            var menuItems = $('.menuItem');
+
             // 密码修改事件
             var changePassword = function(e) {
                 e.preventDefault();
+                menuItems.removeClass('active');
+                $changePasswordLink.addClass('active');
                 self._getWrapperPage('setting/changePassword');
             };
 
             // 首页LINK
             $dashboardLink.click(function(e) {
                 e.preventDefault();
+                menuItems.removeClass('active');
+                $(this).addClass('active');
                 self._getWrapperPage('dashboard/index');
             });
 
             // 用户管理LINK
             $userLink.click(function(e) {
                 e.preventDefault();
+                menuItems.removeClass('active');
+                $(this).addClass('active');
                 self._getWrapperPage('user/index');
             });
 
             // 组织管理LINK
             $deptLink.click(function(e) {
                 e.preventDefault();
+                menuItems.removeClass('active');
+                $(this).addClass('active');
                 self._getWrapperPage('dept/index');
             });
 
