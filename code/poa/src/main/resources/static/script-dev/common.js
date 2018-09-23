@@ -14,6 +14,37 @@ $(function() {
     $.poa = {
         contextPath: contextPath,
         storageCache: {},
+        modal: {
+            create: function(options) {
+                var ajaxOptions = {
+                    url: $.poa.contextPath + options.url,
+                    traditional : true,
+                    type: options.type || "get",
+                    data: options.data || {},
+                    dataType: options.dataType || "html",
+                    async: options.async === false ? false : true,
+                    cache: false,
+                    success: function (data) {
+                        var dialog = $(data);
+                        // create dialog
+                        $("body").append(dialog);
+                        dialog.modal({
+                            keyboard: false,
+                            backdrop: false
+                        });
+                        dialog.on('hidden.bs.modal', function() {
+                            dialog.empty().remove();
+                        });
+                        dialog.modal('show');
+                    }
+                };
+                $.ajax(ajaxOptions);
+            },
+            destroy: function(options) {
+                var dialog = $(options.selector);
+                dialog.modal('hide');
+            }
+        },
         messageBox: {
             alert: function(message, title, callback) {
                 var title = title || $.poa.resource.ALERT;
@@ -26,6 +57,10 @@ $(function() {
             confirm: function(message, title, callback) {
                 var title = title || $.poa.resource.CONFIRM;
                 $.poa.messageBox._message("confirm", message, title, callback);
+            },
+            info: function(message, title, callback) {
+                var title = title || $.poa.resource.INFO;
+                $.poa.messageBox._message("info", message, title, callback);
             },
             _message: function(type, message, title, callback) {
                 var dialog = $("#poaMsgModal"),
@@ -100,6 +135,16 @@ $(function() {
                         }
                         dialog.modal('hide');
                     });
+                } else if (modalType === 'info') {
+                    dialogHeader.html('<i class="fa fa-info-circle fa-fw"></i>' + title);
+                    dialogContent.addClass('modal-info');
+                    dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">' + $.poa.resource.OK + '</button>');
+                    dialogFooter.children('button').click(function() {
+                        if (callback) {
+                            callback();
+                        }
+                        dialog.modal('hide');
+                    });
                 }
                 dialog.modal({
                     keyboard: false,
@@ -107,6 +152,9 @@ $(function() {
                 });
                 dialog.on('hidden.bs.modal', function() {
                     dialog.empty().remove();
+                });
+                dialog.on('shown.bs.modal', function() {
+                    dialog.find('button.btn-primary').focus();
                 });
                 dialog.modal('show');
             }
@@ -211,6 +259,7 @@ $(function() {
                     },
                     async: {
                         url: $.poa.contextPath + options.url,
+                        autoParam: ['id'],
                         type: options.type || 'get',
                         enable: options.url,
                         dataType: 'json',
@@ -223,7 +272,16 @@ $(function() {
                 } else {
                     zNodes = [];
                 }
-                $.fn.zTree.init($tree, setting, zNodes);
+                return $.fn.zTree.init($tree, setting, zNodes);
+            },
+            getSelectedNode: function(zTree) {
+                return zTree.getSelectedNodes();
+            },
+            getNodeById: function(zTree, id) {
+                return node = zTree.getNodeByTId(id);
+            },
+            refeshNode: function(zTree, node) {
+                zTree.reAsyncChildNodes(node, 'refresh', false);
             }
         },
         table: {

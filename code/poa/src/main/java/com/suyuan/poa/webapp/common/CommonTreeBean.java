@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class CommonTreeBean extends CommonBean {
-    private String id;
-    private String pId;
+    private int id;
+    private int pId;
+    private String name;
+
+    private Boolean isParent;
 }

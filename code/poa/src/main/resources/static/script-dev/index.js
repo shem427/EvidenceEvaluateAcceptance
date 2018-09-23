@@ -25,8 +25,8 @@ $(function() {
             var changePassword = function(e) {
                 e.preventDefault();
                 menuItems.removeClass('active');
-                $changePasswordLink.addClass('active');
-                self._getWrapperPage('setting/changePassword');
+                $changePasswordSettingLink.addClass('active');
+                self._getWrapperPage('setting/changePasswordPage');
             };
 
             // 首页LINK

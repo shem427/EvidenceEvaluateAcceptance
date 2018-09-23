@@ -751,3 +751,7 @@ div.modal-footer {
     padding-top: 8px;
     padding-bottom: 8px;
 }
+
+.ztree span {
+    font-size: 14px;
+}
