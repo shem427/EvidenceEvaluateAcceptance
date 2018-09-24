@@ -4,14 +4,12 @@ import com.suyuan.poa.webapp.common.CommonBean;
 import com.suyuan.poa.webapp.common.MessageService;
 import com.suyuan.poa.webapp.dept.bean.DeptBean;
 import com.suyuan.poa.webapp.dept.service.DeptService;
+import com.suyuan.poa.webapp.user.bean.UserBean;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -54,17 +52,20 @@ public class DeptController {
     }
 
     @GetMapping(value = "/editPage")
-    public ModelAndView getEditPage(String parentId,
+    public ModelAndView getEditPage(int parentId,
                                     String parentName,
-                                    String deptId,
+                                    int deptId,
                                     String deptName,
                                     String deptRemark) {
         Map<String, Object> model = new HashMap<>();
+        List<UserBean> managers = deptService.getDeptManagers(deptId);
+
         model.put("parentId", parentId);
         model.put("parentName", parentName);
         model.put("deptId", deptId);
         model.put("deptName", deptName);
         model.put("deptRemark", deptRemark);
+        model.put("managers", managers);
 
         return new ModelAndView("dept/modalPage", model);
     }
@@ -113,5 +114,11 @@ public class DeptController {
             retBean.setMessage(message);
             return retBean;
         }
+    }
+
+    @GetMapping(value = "getManagers")
+    @ResponseBody
+    public List<UserBean> getDeptManagers(int deptId) {
+        return deptService.getDeptManagers(deptId);
     }
 }

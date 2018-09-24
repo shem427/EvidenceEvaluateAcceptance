@@ -19,6 +19,8 @@
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <!-- Bootstrap Table CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap-table.min.css}" />
     <!-- MetisMenu CSS -->
     <link rel="stylesheet" th:href="@{/css/metisMenu.min.css}" />
     <!-- Custom CSS -->
@@ -47,6 +49,10 @@
     <script th:src="@{/js/zTree_v3/js/jquery.ztree.core.js}"></script>
     <script th:src="@{/js/zTree_v3/js/jquery.ztree.excheck.js}"></script>
     <script th:src="@{/js/zTree_v3/js/jquery.ztree.exedit.js}"></script>
+
+    <!-- bootstrap table -->
+    <script th:src="@{/js/bootstrap-table.min.js}"></script>
+    <script th:src="@{/js/bootstrap-table-zh-CN.min.js}"></script>
 
     <script th:inline="javascript">
         var contextPath = /*[[@{/}]]*/ 'test';
@@ -110,6 +116,9 @@
                     </li>
                     <li>
                         <a id="userLink" href="#" class="menuItem"><i class="fa fa-user fa-fw"></i>用户管理</a>
+                    </li>
+                    <li>
+                        <a id="codeLink" href="#" class="menuItem"><i class="fa fa-code-fork fa-fw"></i>模块管理</a>
                     </li>
                     <li>
                         <a id="statisticsLink" href="#" class="menuItem"><i class="fa fa-bar-chart fa-fw"></i>统计分析</a>

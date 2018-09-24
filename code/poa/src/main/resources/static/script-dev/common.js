@@ -299,7 +299,9 @@ $(function() {
                     queryParams: function(params) {
                         var qParam = {
                             limit: params.limit,
-                            offset:params.offset
+                            offset:params.offset,
+                            sortOrder: params.sortOrder,
+                            sortField: params.sortField
                         };
                         return qParam;
                     },
@@ -314,7 +316,7 @@ $(function() {
                     showColumns: true,
                     showRefresh: options.showRefresh !== false,
                     clickToSelect: false,
-                    uniqueId: 'no',
+                    uniqueId: options.uniqueId,
                     showToggle: false,
                     cardView: false,
                     detailView: false,

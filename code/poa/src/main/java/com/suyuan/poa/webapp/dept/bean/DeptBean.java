@@ -10,4 +10,5 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class DeptBean extends CommonTreeBean {
     private String deptRemark;
+    private List<Integer> managerIdList;
 }

@@ -52,4 +52,14 @@ public abstract class CommonDao<T extends CommonBean> {
     protected abstract String getTableName();
 
     protected abstract String idName();
+
+    public int getLastInsertId() {
+        return jdbcTemplate.query("SELECT LAST_INSERT_ID() AS ID", rs -> {
+            int id = -1;
+            while(rs.next()) {
+                id = rs.getInt("ID");
+            }
+            return id;
+        });
+    }
 }

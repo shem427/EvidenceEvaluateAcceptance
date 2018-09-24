@@ -18,6 +18,7 @@ $(function() {
             var $applicationListLink = $('#applicationListLink');
             var $deptLink = $('#deptLink');
             var $userLink = $('#userLink');
+            var $codeLink = $('#codeLink');
 
             var menuItems = $('.menuItem');
 
@@ -56,6 +57,14 @@ $(function() {
             // 密码修改LINK
             $changePasswordLink.click(changePassword);
             $changePasswordSettingLink.click(changePassword);
+
+            // 模块管理
+            $codeLink.click(function(e) {
+                e.preventDefault();
+                menuItems.removeClass('active');
+                $(this).addClass('active');
+                self._getWrapperPage('code/index');
+            });
 
             // 打开页面默认选中首页.
             $dashboardLink.trigger('click');

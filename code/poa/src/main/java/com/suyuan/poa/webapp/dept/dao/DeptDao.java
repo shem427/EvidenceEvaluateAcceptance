@@ -3,9 +3,9 @@ package com.suyuan.poa.webapp.dept.dao;
 import com.suyuan.poa.webapp.common.CommonDao;
 import com.suyuan.poa.webapp.common.DBConstant;
 import com.suyuan.poa.webapp.dept.bean.DeptBean;
+import com.suyuan.poa.webapp.user.bean.UserBean;
 import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -64,7 +64,8 @@ public class DeptDao extends CommonDao<DeptBean> {
 
     public int add(DeptBean dept) {
         String sql = "INSERT INTO DEPT (`DEPT_NAME`, `DEPT_REMARK`, `PARENT_ID`) VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql, dept.getName(), dept.getDeptRemark(), dept.getPId());
+        jdbcTemplate.update(sql, dept.getName(), dept.getDeptRemark(), dept.getPId());
+        return getLastInsertId();
     }
 
     public int edit(DeptBean dept) {
@@ -75,5 +76,42 @@ public class DeptDao extends CommonDao<DeptBean> {
     public int delete(int deptId) {
         String sql = "DELETE FROM DEPT WHERE DEPT_ID=?";
         return jdbcTemplate.update(sql, deptId);
+    }
+
+    public List<UserBean> getManagers(int deptId) {
+        String sql = "SELECT M.DEPT_ID, D.DEPT_NAME, M.USER_ID, U.USER_NAME FROM DEPT_MANAGER M, USER U, DEPT D"
+                + " WHERE M.DEPT_ID=D.DEPT_ID AND M.USER_ID=U.USER_ID AND D.DEPT_ID=?";
+        List<UserBean> userList = jdbcTemplate.query(sql, new Integer[] {deptId},
+                rs -> {
+                    List<UserBean> us = new ArrayList<>();
+                    while (rs.next()) {
+                        us.add(getMananger(rs));
+                    }
+                    return us;
+                });
+        return userList;
+    }
+
+    private UserBean getMananger(ResultSet rs) throws SQLException {
+        UserBean user = new UserBean();
+        user.setUserId(rs.getInt("USER_ID"));
+        user.setName(rs.getString("USER_NAME"));
+
+        return user;
+    }
+
+    public void deleteManagers(int deptId) {
+        String sql = "DELETE FROM DEPT_MANAGER WHERE DEPT_ID=?";
+        jdbcTemplate.update(sql, deptId);
+    }
+
+    public void saveManagers(int deptId, List<Integer> userIdList) {
+        if (userIdList == null || userIdList.isEmpty()) {
+            return;
+        }
+        String sql = "INSERT INTO DEPT_MANAGER (DEPT_ID, USER_ID) VALUES (?,?)";
+        for (int userId : userIdList) {
+            jdbcTemplate.update(sql, deptId, userId);
+        }
     }
 }

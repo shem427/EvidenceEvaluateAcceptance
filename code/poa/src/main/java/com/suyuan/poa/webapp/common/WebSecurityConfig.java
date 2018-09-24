@@ -36,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 .loginPage("/login").failureUrl("/login?error")
+                .defaultSuccessUrl("/index", true)
                 .permitAll()
                 .and()
                 .authorizeRequests()

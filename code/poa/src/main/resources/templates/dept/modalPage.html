@@ -5,8 +5,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     <span class="fa fa-times"></span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">
+                <h4 class="modal-title" id="myModalLabel" th:if="${deptId == null}">
                     添加组织
+                </h4>
+                <h4 class="modal-title" id="myModalLabel" th:if="${deptId != null}">
+                    编辑组织
                 </h4>
             </div>
             <div class="modal-body">
@@ -23,7 +26,19 @@
                     </div>
                     <div class="form-group">
                         <label for="deptRemark">备注</label>
-                        <textarea class="form-control" id="deptRemark" placeholder="请输入备注" th:text="${deptRemark}"></textarea>
+                        <textarea class="form-control" id="deptRemark" placeholder="请输入备注" th:text="${deptRemark}" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="deptManagers">负责人</label>
+                        <select id="deptManagers" class="form-control" multiple="multiple">
+                            <th:block th:each="user : ${managers}">
+                                <option th:value="${user.userId}" th:text="${user.name}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" id="addManager">添加负责人</button>
+                        <button type="button" class="btn btn-default" id="deleteManager">删除负责人</button>
                     </div>
                 </form>
             </div>

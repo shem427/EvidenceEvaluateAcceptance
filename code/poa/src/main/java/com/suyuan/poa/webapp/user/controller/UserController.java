@@ -1,8 +1,11 @@
 package com.suyuan.poa.webapp.user.controller;
 
 import com.suyuan.poa.webapp.common.CommonBean;
+import com.suyuan.poa.webapp.common.SearchParam;
 import com.suyuan.poa.webapp.user.bean.UserBean;
+import com.suyuan.poa.webapp.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,10 +21,22 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
-    private static List<UserBean> userList = null;
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = "/index")
     public String page() {
         return "user/page";
+    }
+
+    @GetMapping(value = "/modalUsers")
+    public String modalUserList() {
+        return "user/modalUsersPage";
+    }
+
+    @GetMapping(value = "/userList")
+    @ResponseBody
+    public List<UserBean> getUserList(SearchParam param, String policeNoLike, String nameLike) {
+        return null;
     }
 }

@@ -14,7 +14,6 @@ import org.thymeleaf.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class PoaUserService implements UserDetailsService {
     /**
      * DB中ROLE的分隔符
@@ -22,7 +21,7 @@ public class PoaUserService implements UserDetailsService {
     private static final String ROLE_SEPERATOR = ",";
 
     @Autowired
-    private UserDao userDao;
+    protected UserDao userDao;
 
     @Override
     public UserDetails loadUserByUsername(String policeNumber) throws UsernameNotFoundException {
