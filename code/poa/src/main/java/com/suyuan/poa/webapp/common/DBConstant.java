@@ -1,5 +1,8 @@
 package com.suyuan.poa.webapp.common;
 
+/**
+ * DB常量定义类。
+ */
 public class DBConstant {
     private DBConstant() {
     }
@@ -23,4 +26,11 @@ public class DBConstant {
     // DEPT MANAGER TABLE
     public static final String DEPT_MANAGER_TABLE = "DEPT_MANAGER";
     public static final String DEPT_MANAGER_ID = "MANAGER_ID";
+
+    // CODE
+    public static final String CODE_TABLE = "CODE";
+    public static final String CODE_ID = "CODE_ID";
+    public static final String CODE_TYPE_ID = "CODE_TYPE";
+    public static final String CODE_TYPE_NAME = "CODE_TYPE_NAME";
+    public static final String CODE_NAME = "CODE_NAME";
 }

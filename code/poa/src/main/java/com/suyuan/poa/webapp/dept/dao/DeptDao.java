@@ -109,7 +109,7 @@ public class DeptDao extends CommonDao<DeptBean> {
         if (userIdList == null || userIdList.isEmpty()) {
             return;
         }
-        String sql = "INSERT INTO DEPT_MANAGER (DEPT_ID, USER_ID) VALUES (?,?)";
+        String sql = "INSERT INTO DEPT_MANAGER (`DEPT_ID`, `USER_ID`) VALUES (?,?)";
         for (int userId : userIdList) {
             jdbcTemplate.update(sql, deptId, userId);
         }

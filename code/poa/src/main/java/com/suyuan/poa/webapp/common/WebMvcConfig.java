@@ -5,6 +5,9 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+/**
+ * Web MVC的配置类。
+ */
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override

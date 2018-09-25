@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.Locale;
 
+/**
+ * Message Service类
+ */
 @Component
 public class MessageService {
     @Resource

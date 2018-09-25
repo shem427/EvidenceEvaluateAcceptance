@@ -3,6 +3,9 @@ package com.suyuan.poa.webapp.common;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 树对象的父类。
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class CommonTreeBean extends CommonBean {

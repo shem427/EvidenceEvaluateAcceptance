@@ -14,6 +14,9 @@ import org.thymeleaf.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 人员登陆Service类
+ */
 public class PoaUserService implements UserDetailsService {
     /**
      * DB中ROLE的分隔符
@@ -23,6 +26,12 @@ public class PoaUserService implements UserDetailsService {
     @Autowired
     protected UserDao userDao;
 
+    /**
+     * 根据警号获取人员信息。
+     * @param policeNumber 输入的警号
+     * @return 人员信息
+     * @throws UsernameNotFoundException 找不到人员例外
+     */
     @Override
     public UserDetails loadUserByUsername(String policeNumber) throws UsernameNotFoundException {
         UserBean user = userDao.getUserByPoliceNumber(policeNumber);
