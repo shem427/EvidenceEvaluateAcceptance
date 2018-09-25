@@ -29,13 +29,15 @@ $(function() {
         },
         _validation: function(oldPassword, newPassword, newPasswordConfirm) {
             if (newPassword.val() !== newPasswordConfirm.val()) {
+                // 新密码与新密码确认必须一致。
                 $.poa.messageBox.alert($.poa.resource.NEW_PASSWORD_NOT_MATCH, '', function() {
                     oldPassword.val('');
                     newPassword.val('');
                     newPasswordConfirm.val('');
                 });
                 return false;
-            } else if (oldPassword === newPassword) {
+            } else if (oldPassword.val() === newPassword.val()) {
+                // 新密码与旧密码必须不一致。
                 $.poa.messageBox.alert($.poa.resource.OLD_NEW_PASSWORD_SAME, '', function() {
                     oldPassword.val('');
                     newPassword.val('');

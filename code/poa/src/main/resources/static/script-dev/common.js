@@ -295,16 +295,18 @@ $(function() {
                     cache: options.cache === true,
                     pagination: options.pagination !== false,
                     sortable: options.sortable !== false,
+                    sortName: options.sortName,
                     sortOrder: 'asc',
                     queryParams: function(params) {
                         var qParam = {
                             limit: params.limit,
                             offset:params.offset,
-                            sortOrder: params.sortOrder,
-                            sortField: params.sortField
+                            sortOrder: params.order,
+                            sortField: params.sort
                         };
                         return qParam;
                     },
+                    ajaxOption: options.ajaxOption,
                     sidePagination: 'server',
                     pageNumber: 1,
                     pageSize: 10,
@@ -321,7 +323,7 @@ $(function() {
                     cardView: false,
                     detailView: false,
                     columns: options.columns,
-                    undefinedText: $.poa.resource.TABLE_NO_DATA,
+                    undefinedText: '',
                     rowStyle: options.rowStyle,
                     onLoadSuccess: options.onLoadSuccess,
                     onLoadError: options.onLoadError

@@ -2,6 +2,7 @@ package com.suyuan.poa.webapp.user.controller;
 
 import com.suyuan.poa.webapp.common.CommonBean;
 import com.suyuan.poa.webapp.common.SearchParam;
+import com.suyuan.poa.webapp.common.TableData;
 import com.suyuan.poa.webapp.user.bean.UserBean;
 import com.suyuan.poa.webapp.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -34,9 +35,16 @@ public class UserController {
         return "user/modalUsersPage";
     }
 
+    /**
+     * 根据制定条件检索符合条件的人员。
+     * @param param 共通检索条件
+     * @param policeNoLike 警号模糊条件
+     * @param nameLike 姓名模糊条件
+     * @return 符合条件人员
+     */
     @GetMapping(value = "/userList")
     @ResponseBody
-    public List<UserBean> getUserList(SearchParam param, String policeNoLike, String nameLike) {
-        return null;
+    public TableData<UserBean> searchUser(SearchParam param, String policeNoLike, String nameLike) {
+        return userService.searchUser(param, policeNoLike, nameLike);
     }
 }
