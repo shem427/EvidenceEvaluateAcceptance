@@ -13,6 +13,9 @@ import java.util.List;
 
 @Component
 public class DeptDao extends CommonDao<DeptBean> {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected DeptBean convertBean(ResultSet rs) throws SQLException {
         DeptBean bean = new DeptBean();
@@ -25,16 +28,27 @@ public class DeptDao extends CommonDao<DeptBean> {
         return bean;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getTableName() {
         return DBConstant.DEPT_TABLE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String idName() {
         return DBConstant.DEPT_ID;
     }
 
+    /**
+     * 根据父组织ID，获取下位组织信息。
+     * @param pId 父组织ID
+     * @return 下位组织信息
+     */
     public List<DeptBean> getDeptByParentId(int pId) {
         StringBuilder sbSQL = new StringBuilder();
         sbSQL.append("SELECT ");
@@ -62,22 +76,42 @@ public class DeptDao extends CommonDao<DeptBean> {
         return subList;
     }
 
+    /**
+     * 添加组织信息。
+     * @param dept 组织信息。
+     * @return 添加的组织ID
+     */
     public int add(DeptBean dept) {
         String sql = "INSERT INTO DEPT (`DEPT_NAME`, `DEPT_REMARK`, `PARENT_ID`) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, dept.getName(), dept.getDeptRemark(), dept.getPId());
         return getLastInsertId();
     }
 
+    /**
+     * 编辑组织信息。
+     * @param dept 组织信息
+     * @return 编辑的组织件数
+     */
     public int edit(DeptBean dept) {
         String sql = "UPDATE DEPT SET DEPT_NAME=?, DEPT_REMARK=? WHERE DEPT_ID=?";
         return jdbcTemplate.update(sql, dept.getName(), dept.getDeptRemark(), dept.getId());
     }
 
+    /**
+     * 删除组织信息。
+     * @param deptId 组织ID
+     * @return 删除的组织件数
+     */
     public int delete(int deptId) {
         String sql = "DELETE FROM DEPT WHERE DEPT_ID=?";
         return jdbcTemplate.update(sql, deptId);
     }
 
+    /**
+     * 获取组织的管理者。
+     * @param deptId 组织ID
+     * @return 组织管理者
+     */
     public List<UserBean> getManagers(int deptId) {
         String sql = "SELECT M.DEPT_ID, D.DEPT_NAME, M.USER_ID, U.USER_NAME FROM DEPT_MANAGER M, USER U, DEPT D"
                 + " WHERE M.DEPT_ID=D.DEPT_ID AND M.USER_ID=U.USER_ID AND D.DEPT_ID=?";
@@ -100,11 +134,20 @@ public class DeptDao extends CommonDao<DeptBean> {
         return user;
     }
 
+    /**
+     * 删除组织全部管理者
+     * @param deptId 组织ID
+     */
     public void deleteManagers(int deptId) {
         String sql = "DELETE FROM DEPT_MANAGER WHERE DEPT_ID=?";
         jdbcTemplate.update(sql, deptId);
     }
 
+    /**
+     * 保存组织管理者
+     * @param deptId 组织ID
+     * @param userIdList 管理者ID List
+     */
     public void saveManagers(int deptId, List<Integer> userIdList) {
         if (userIdList == null || userIdList.isEmpty()) {
             return;

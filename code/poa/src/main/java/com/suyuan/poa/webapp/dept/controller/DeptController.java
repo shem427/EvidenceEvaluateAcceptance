@@ -16,22 +16,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 组织Controller类。
+ */
 @Controller
 @RequestMapping(value = "/dept")
 public class DeptController {
+    /** 日志 */
     private static final Log LOG = LogFactory.getLog(DeptController.class);
 
+    /** 组织service对象 */
     @Autowired
     private DeptService deptService;
 
+    /** message service对象 */
     @Autowired
     private MessageService messageService;
 
+    /**
+     * 显示组织管理初始页面。
+     * @return 组织管理初始页面
+     */
     @GetMapping(value = "/index")
     public String page() {
         return "dept/page";
     }
 
+    /**
+     * 获取下位组织信息。
+     * @param id 组织ID
+     * @return 下位组织信息
+     */
     @GetMapping(value = "/subDept")
     @ResponseBody
     public List<DeptBean> getSubDept(Integer id) {
@@ -42,6 +57,12 @@ public class DeptController {
         return deptService.getSubDept(deptId);
     }
 
+    /**
+     * 显示组织添加模态框页面。
+     * @param parentId 父组织ID
+     * @param parentName 父组织名
+     * @return 组织添加模态框页面
+     */
     @GetMapping(value = "/addPage")
     public ModelAndView getAddPage(String parentId, String parentName) {
         Map<String, Object> model = new HashMap<>();
@@ -51,6 +72,15 @@ public class DeptController {
         return new ModelAndView("dept/modalPage", model);
     }
 
+    /**
+     * 显示组织编辑模态框页面。
+     * @param parentId 父组织ID
+     * @param parentName  父组织名
+     * @param deptId 组织ID
+     * @param deptName 组织名
+     * @param deptRemark 组织备注
+     * @return 组织编辑模态框页面
+     */
     @GetMapping(value = "/editPage")
     public ModelAndView getEditPage(int parentId,
                                     String parentName,
@@ -70,6 +100,11 @@ public class DeptController {
         return new ModelAndView("dept/modalPage", model);
     }
 
+    /**
+     * 组织添加/编辑时的保存。
+     * @param dept 页面中组织信息
+     * @return 保存成功/失败
+     */
     @PostMapping(value = "/saveDept")
     @ResponseBody
     public CommonBean saveDept(DeptBean dept) {
@@ -92,6 +127,11 @@ public class DeptController {
         return bean;
     }
 
+    /**
+     * 删除组织信息。
+     * @param deptId 组织ID
+     * @return 删除成功/失败
+     */
     @PostMapping(value = "deleteDept")
     @ResponseBody
     public CommonBean deleteDept(int deptId) {
@@ -99,6 +139,7 @@ public class DeptController {
         try {
             boolean hasChildren = deptService.hasChildren(deptId);
             if (hasChildren) {
+                // 有下位组织，不能删除
                 String message = messageService.getMessage("poa.delete.dept.hasChildren");
                 retBean.setStatus(CommonBean.Status.WARNING);
                 retBean.setMessage(message);
@@ -116,6 +157,11 @@ public class DeptController {
         }
     }
 
+    /**
+     * 获取组织的管理者。
+     * @param deptId 组织ID
+     * @return 组织管理者
+     */
     @GetMapping(value = "getManagers")
     @ResponseBody
     public List<UserBean> getDeptManagers(int deptId) {

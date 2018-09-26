@@ -6,9 +6,14 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * 组织Bean类。
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class DeptBean extends CommonTreeBean {
+    /** 组织备注 */
     private String deptRemark;
+    /** 组织管理者ID List */
     private List<Integer> managerIdList;
 }
