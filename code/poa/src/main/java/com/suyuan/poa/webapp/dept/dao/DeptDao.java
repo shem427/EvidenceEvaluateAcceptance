@@ -113,7 +113,7 @@ public class DeptDao extends CommonDao<DeptBean> {
      * @return 组织管理者
      */
     public List<UserBean> getManagers(int deptId) {
-        String sql = "SELECT M.DEPT_ID, D.DEPT_NAME, M.USER_ID, U.USER_NAME FROM DEPT_MANAGER M, USER U, DEPT D"
+        String sql = "SELECT M.DEPT_ID, D.DEPT_NAME, M.USER_ID, U.USER_NAME, U.POLICE_NUMBER FROM DEPT_MANAGER M, USER U, DEPT D"
                 + " WHERE M.DEPT_ID=D.DEPT_ID AND M.USER_ID=U.USER_ID AND D.DEPT_ID=?";
         List<UserBean> userList = jdbcTemplate.query(sql, new Integer[] {deptId},
                 rs -> {
@@ -130,6 +130,7 @@ public class DeptDao extends CommonDao<DeptBean> {
         UserBean user = new UserBean();
         user.setUserId(rs.getInt("USER_ID"));
         user.setName(rs.getString("USER_NAME"));
+        user.setPoliceNumber(rs.getString("POLICE_NUMBER"));
 
         return user;
     }

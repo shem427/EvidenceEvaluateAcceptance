@@ -31,7 +31,7 @@ $(function() {
                 } else {
                     data.pId = parentId;
                 }
-                data.managerIdList = self._setDeptManagers();
+                data.managerIdList = self._setDeptManagers(false);
                 $.poa.ajax({
                     url: 'dept/saveDept',
                     type: 'post',
@@ -39,15 +39,27 @@ $(function() {
                     data: data,
                     success: function() {
                         var selectedNodes = $.poa.tree.getSelectedNode(self.deptTree);
-                        var parentNode;
+                        var parentNode, tobeSelectNode;
                         $.poa.modal.destroy({
                             selector: '#deptModal'
                         });
                         if (isEdit) {
-                            parentNode = $.poa.tree.getNodeById(self.deptTree, selectedNodes[0].parentTId);
-                            $.poa.tree.refeshNode(self.deptTree, parentNode);
+                            parentNode = $.poa.tree.getNodeByTId(self.deptTree, selectedNodes[0].parentTId);
+                            $.poa.tree.refreshNode(self.deptTree, parentNode, function() {
+                                var deptIdInt = parseInt(deptId);
+                                tobeSelectNode = $.poa.tree.getNodeByParam(self.deptTree, 'id',
+                                    deptIdInt, parentNode);
+                                if (tobeSelectNode)
+                                    $('#' + tobeSelectNode.tId + ' > a').trigger('click');
+                            });
                         } else {
-                            $.poa.tree.refeshNode(self.deptTree, selectedNodes[0]);
+                            $.poa.tree.refreshNode(self.deptTree, selectedNodes[0], function() {
+                                var deptIdInt = parseInt(deptId);
+                                tobeSelectNode = $.poa.tree.getNodeByParam(self.deptTree, 'id',
+                                    deptIdInt, selectedNodes[0]);
+                                if (tobeSelectNode)
+                                    $('#' + tobeSelectNode.tId + ' > a').trigger('click');
+                            });
                         }
                     }
                 });
@@ -56,11 +68,45 @@ $(function() {
             var deptManagers = $('#deptManagers');
             // 添加管理者事件
             $('#addManager').click(function() {
-                var managers = self._setDeptManagers();
+                var managers = self._setDeptManagers(true);
                 // 弹出用户选择对话框
                 $.poa.modal.create({
                     url: 'user/modalUsers',
-                    data: managers
+                    afterDisplaying: function(dialog) {
+                        // 初始化已选择人员列表
+                        var selectedUsers = $('#selectedUsers', dialog);
+                        var selectUsersBtn = $('#selectUsers', dialog);
+                        $.each(managers, function(indx, item) {
+                            var option = $('<option></option>');
+                            option.val(item.userId);
+                            option.text(item.name);
+                            option.appendTo(selectedUsers);
+                        });
+
+                        // 设置保存按钮事件
+                        selectUsersBtn.click(function() {
+                            var option,
+                                userOption,
+                                deptManagers = $('#deptManagers'),
+                                selectedUserOptions = selectedUsers.find('option');
+                            deptManagers.empty();
+                            if (!selectedUserOptions || selectedUserOptions.length === 0) {
+                                $.poa.messageBox.alert($.poa.resource.USER_NO_SELECTION);
+                                return;
+                            }
+                            for (var i = 0; i < selectedUserOptions.length; i++) {
+                                userOption = $(selectedUserOptions[i]);
+                                option = $('<option></option>');
+                                option.val(userOption.val());
+                                option.text(userOption.text());
+                                option.appendTo(deptManagers);
+                            }
+
+                            $.poa.modal.destroy({
+                                selector: '#userModal'
+                            });
+                        });
+                    }
                 });
             });
             // 删除管理者事件
@@ -74,13 +120,20 @@ $(function() {
          * @returns {Array} 页面设置的组织管理者
          * @private
          */
-        _setDeptManagers: function() {
+        _setDeptManagers: function(includeName) {
             var selectedDeptManagers = $('#deptManagers > option');
-            var userIdList = [];
+            var userList = [];
             selectedDeptManagers.each(function(indx, item) {
-                userIdList.push($(item).val());
+                if (includeName) {
+                    userList.push({
+                        userId: $(item).val(),
+                        name: $(item).text()
+                    });
+                } else {
+                    userList.push($(item).val());
+                }
             });
-            return userIdList;
+            return userList;
         },
         /**
          * 组织树的初始化
@@ -129,7 +182,7 @@ $(function() {
          * @private
          */
         _getDeptManagers: function(deptId, selectedDeptManagers) {
-            $.poa.ajax({
+                $.poa.ajax({
                 url: 'dept/getManagers',
                 type: 'get',
                 dataType: 'json',
@@ -144,7 +197,7 @@ $(function() {
                         user = data[i];
                         option = $('<option></option>');
                         option.val(user.userId);
-                        option.text(user.name);
+                        option.text(user.name + "(" + user.policeNumber + ")");
                         option.appendTo(selectedDeptManagers);
                     }
                 }
@@ -182,7 +235,7 @@ $(function() {
                     data;
                 if (selectedNodes && selectedNodes.length > 0) {
                     selectedNode = selectedNodes[0];
-                    parentNode = $.poa.tree.getNodeById(self.deptTree, selectedNode.parentTId);
+                    parentNode = $.poa.tree.getNodeByTId(self.deptTree, selectedNode.parentTId);
                     data = {
                         deptId: selectedNode.id,
                         deptName: selectedNode.name,
@@ -218,8 +271,9 @@ $(function() {
                                     deptId: selectedNodes[0].id
                                 },
                                 success: function() {
-                                    var parentNode = $.poa.tree.getNodeById(self.deptTree, selectedNodes[0].parentTId);
-                                    $.poa.tree.refeshNode(self.deptTree, parentNode);
+                                    var parentNode = $.poa.tree.getNodeByTId(self.deptTree, selectedNodes[0].parentTId);
+                                    $.poa.tree.refreshNode(self.deptTree, parentNode);
+                                    self._clearDetail();
                                 }
                             });
                         }
@@ -228,6 +282,12 @@ $(function() {
                     $.poa.messageBox.alert($.poa.resource.DEPT_NO_SELECTION);
                 }
             });
+        },
+        _clearDetail: function() {
+            $('#selectedDeptId').val('');
+            $('#selectedDeptName').val('');
+            $('#selectedDeptRemark').val('');
+            $('#selectedDeptManagers').empty();
         }
     };
     var self = $.poa.dept;

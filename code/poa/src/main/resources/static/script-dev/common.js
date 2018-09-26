@@ -30,10 +30,15 @@ $(function() {
                         $("body").append(dialog);
                         dialog.modal({
                             keyboard: false,
-                            backdrop: false
+                            backdrop: 'static'
                         });
                         dialog.on('hidden.bs.modal', function() {
                             dialog.empty().remove();
+                        });
+                        dialog.on('shown.bs.modal', function() {
+                            if (options.afterDisplaying) {
+                                options.afterDisplaying(dialog);
+                            }
                         });
                         dialog.modal('show');
                     }
@@ -277,11 +282,17 @@ $(function() {
             getSelectedNode: function(zTree) {
                 return zTree.getSelectedNodes();
             },
-            getNodeById: function(zTree, id) {
-                return node = zTree.getNodeByTId(id);
+            getNodeByTId: function(zTree, id) {
+                return zTree.getNodeByTId(id);
             },
-            refeshNode: function(zTree, node) {
-                zTree.reAsyncChildNodes(node, 'refresh', false);
+            getNodeByParam: function(zTree, key, value, parentNode) {
+                return zTree.getNodeByParam(key, value, parentNode);
+            },
+            refreshNode: function(zTree, node, callback) {
+                zTree.reAsyncChildNodes(node, 'refresh', false, callback);
+            },
+            selectNode: function(zTree, node) {
+                zTree.selectNode(node, false, false);
             }
         },
         table: {
@@ -325,6 +336,8 @@ $(function() {
                     rowStyle: options.rowStyle,
                     showColumns: options.showColumns === true,
                     showRefresh: options.showRefresh === true,
+                    onCheck: options.onCheck,
+                    onUncheck: options.onUncheck,
                     onLoadSuccess: options.onLoadSuccess,
                     onLoadError: options.onLoadError
                 });
