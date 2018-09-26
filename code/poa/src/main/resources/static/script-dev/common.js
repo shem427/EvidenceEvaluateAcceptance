@@ -297,7 +297,7 @@ $(function() {
                     sortable: options.sortable !== false,
                     sortName: options.sortName,
                     sortOrder: 'asc',
-                    queryParams: function(params) {
+                    queryParams: options.queryParams || function(params) {
                         var qParam = {
                             limit: params.limit,
                             offset:params.offset,
@@ -306,17 +306,15 @@ $(function() {
                         };
                         return qParam;
                     },
-                    ajaxOption: options.ajaxOption,
+                    ajaxOptions: options.ajaxOptions,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 10,
+                    pageSize: options.pageSize || 10,
                     pageList: options.pageList || [10, 25, 50, 100],
                     search: options.search === true,
                     contentType: 'application/json',
                     dataType: 'json',
                     strictSearch: true,
-                    showColumns: true,
-                    showRefresh: options.showRefresh !== false,
                     clickToSelect: false,
                     uniqueId: options.uniqueId,
                     showToggle: false,
@@ -325,9 +323,15 @@ $(function() {
                     columns: options.columns,
                     undefinedText: '',
                     rowStyle: options.rowStyle,
+                    showColumns: options.showColumns === true,
+                    showRefresh: options.showRefresh === true,
                     onLoadSuccess: options.onLoadSuccess,
                     onLoadError: options.onLoadError
                 });
+            },
+            refresh: function(options) {
+                var $table = $(options.selector);
+                $table.bootstrapTable('refresh', options.params);
             }
         }
     };

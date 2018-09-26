@@ -5,8 +5,13 @@ $(function() {
                 selector: '#modalUsersTable',
                 url: 'user/userList',
                 sortName: 'POLICE_NUMBER',
+                pageSize: 5,
+                pageList: [5, 10, 20, 50],
                 columns: [{
-                    checkbox: true
+                    checkbox: true,
+                    formatter: function(value, row, index) {
+                        // TODO:
+                    }
                 }, {
                     field: 'policeNumber',
                     title: '警号'
@@ -14,12 +19,32 @@ $(function() {
                     field: 'name',
                     title: '姓名'
                 }],
-                ajaxOption: {
-                    data: self._additionalCondition()
+                queryParams: function(params) {
+                    var policeNoLike = $('#policeNo').val();
+                    var nameLike = $('#userName').val();
+                    return {
+                        limit: params.limit,
+                        offset:params.offset,
+                        sortOrder: params.order,
+                        sortField: params.sort,
+                        policeNoLike: policeNoLike,
+                        nameLike: nameLike
+                    };
+                },
+                onCheck: function(row) {
+
+                },
+                onUncheck: function(row) {
+
                 }
             });
             $('#userSearch').click(function() {
-                alert('test');
+                $.poa.table.refresh({
+                    selector: '#modalUsersTable',
+                    params: {
+                        silent: true
+                    }
+                });
             });
         },
         _additionalCondition: function() {
