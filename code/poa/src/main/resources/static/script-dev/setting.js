@@ -46,6 +46,9 @@ $(function() {
                 return false;
             }
             return true;
+        },
+        initUpdateProfile: function() {
+
         }
     };
     var self = $.poa.setting;

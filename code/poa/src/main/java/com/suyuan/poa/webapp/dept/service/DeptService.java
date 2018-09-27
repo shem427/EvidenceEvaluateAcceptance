@@ -28,7 +28,7 @@ public class DeptService {
         // insert dept and return dept id.
         int deptId = deptDao.add(dept);
         // save dept_manager.
-        saveDeptManagers(dept.getId(), dept.getManagerIdList());
+        saveDeptManagers(deptId, dept.getManagerIdList());
 
         return deptId;
     }

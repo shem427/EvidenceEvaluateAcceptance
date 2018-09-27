@@ -29,6 +29,12 @@ $(function() {
                 $changePasswordSettingLink.addClass('active');
                 self._getWrapperPage('setting/changePasswordPage');
             };
+            var updateProfile = function(e) {
+                e.preventDefault();
+                menuItems.removeClass('active');
+                $updateProfileSettingLink.addClass('active');
+                self._getWrapperPage('setting/updateProfilePage');
+            };
 
             // 首页LINK
             $dashboardLink.click(function(e) {
@@ -57,6 +63,10 @@ $(function() {
             // 密码修改LINK
             $changePasswordLink.click(changePassword);
             $changePasswordSettingLink.click(changePassword);
+
+            // 修改个人资料
+            $updateProfileLink.click(updateProfile);
+            $updateProfileSettingLink.click(updateProfile);
 
             // 模块管理
             $codeLink.click(function(e) {
