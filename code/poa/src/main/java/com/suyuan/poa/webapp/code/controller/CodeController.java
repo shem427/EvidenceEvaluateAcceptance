@@ -12,10 +12,13 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
 import javax.jws.Oneway;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 模块管理Controller类
@@ -35,6 +38,26 @@ public class CodeController {
     @GetMapping(value = "/index")
     public String page() {
         return "code/page";
+    }
+
+    @GetMapping(value = "/addPage")
+    public ModelAndView modalAddPage() {
+        List<CodeTypeBean> codeTypes = codeService.getAllTypes();
+        Map<String, Object> model = new HashMap<>();
+        model.put("codeTypes", codeTypes);
+        return new ModelAndView("code/modalPage", model);
+    }
+
+    @GetMapping(value = "/editPage")
+    public ModelAndView modalEditPage(int codeId, int codeTypeId, String codeName) {
+        List<CodeTypeBean> codeTypes = codeService.getAllTypes();
+        Map<String, Object> model = new HashMap<>();
+        model.put("codeTypes", codeTypes);
+        model.put("codeId", codeId);
+        model.put("codeTypeId", codeTypeId);
+        model.put("codeName", codeName);
+
+        return new ModelAndView("code/modalPage", model);
     }
 
     @GetMapping(value = "/codeList")
@@ -77,6 +100,21 @@ public class CodeController {
             bean.setMessage(message);
         }
 
+        return bean;
+    }
+
+    @PostMapping(value = "/save")
+    @ResponseBody
+    public CommonBean saveCode(CodeBean codeBean) {
+        CommonBean bean = new CommonBean();
+        try {
+            codeService.saveCode(codeBean);
+        } catch (Exception e) {
+            String message = messageService.getMessage("poa.save.code.error");
+            LOG.error(message, e);
+            bean.setStatus(CommonBean.Status.ERROR);
+            bean.setMessage(message);
+        }
         return bean;
     }
 }

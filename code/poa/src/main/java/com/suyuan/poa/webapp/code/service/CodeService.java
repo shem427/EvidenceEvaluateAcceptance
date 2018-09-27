@@ -54,4 +54,20 @@ public class CodeService {
     public List<CodeTypeBean> getAllTypes() {
         return codeDao.getAllCodeType();
     }
+
+    @Transactional
+    public int saveCode(CodeBean code) {
+        int codeTypeId = code.getCodeTypeId();
+        if (codeTypeId <= 0) {
+            codeTypeId = codeDao.getNextCodeTypeId();
+            code.setCodeTypeId(codeTypeId);
+        }
+        if (code.getCodeId() > 0) {
+            // 编辑
+            return codeDao.saveCode(code);
+        } else {
+            // 添加
+            return codeDao.createDao(code);
+        }
+    }
 }

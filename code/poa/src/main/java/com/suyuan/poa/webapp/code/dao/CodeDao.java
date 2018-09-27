@@ -162,4 +162,36 @@ public class CodeDao extends CommonDao<CodeBean> {
                 + DBConstant.CODE_ID + "=?";
         return jdbcTemplate.update(sql, codeId);
     }
+
+    public synchronized int getNextCodeTypeId() {
+        String sql = "SELECT MAX(`"+ DBConstant.CODE_TYPE_ID + "`) + 1 AS NXT FROM "
+                + DBConstant.CODE_TABLE;
+        return jdbcTemplate.query(sql, rs -> {
+            int maxId = 0;
+            while (rs.next()) {
+                maxId = rs.getInt("NXT");
+            }
+            return maxId;
+        });
+    }
+
+    public int saveCode(CodeBean code) {
+        StringBuilder sbSQL = new StringBuilder();
+        sbSQL.append("UPDATE ").append(DBConstant.CODE_TABLE);
+        sbSQL.append(" SET ").append(DBConstant.CODE_NAME).append("=? WHERE ");
+        sbSQL.append(DBConstant.CODE_ID).append("=?");
+        return jdbcTemplate.update(sbSQL.toString(), code.getCodeName(), code.getCodeId());
+    }
+
+    public int createDao(CodeBean code) {
+        StringBuilder sbSQL = new StringBuilder();
+        sbSQL.append("INSERT INTO ").append(DBConstant.CODE_TABLE).append("(")
+                .append(DBConstant.CODE_TYPE_ID).append(",")
+                .append(DBConstant.CODE_TYPE_NAME).append(",")
+                .append(DBConstant.CODE_NAME).append(",")
+                .append(DBConstant.IS_ACTIVE)
+                .append(") VALUES(?,?,?,?)");
+        return jdbcTemplate.update(sbSQL.toString(), code.getCodeTypeId(),
+                code.getCodeTypeName(), code.getCodeName(), true);
+    }
 }

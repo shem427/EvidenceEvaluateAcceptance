@@ -1,0 +1,51 @@
+<div class="modal fade" id="codeModal" tabindex="-1" role="dialog" aria-labelledby="codeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="fa fa-times"></span>
+                </button>
+                <h4 class="modal-title" id="codeModalLabel" th:if="${codeId == null}">
+                    添加模块
+                </h4>
+                <h4 class="modal-title" id="codeModalLabel" th:if="${codeId != null}">
+                    编辑模块
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="selectedCodeTypeId">模块类型</label>
+                        <select id="selectedCodeTypeId" class="form-control">
+                            <th:block th:each="codeType : ${codeTypes}">
+                                <option th:value="${codeType.codeTypeId}"
+                                        th:text="${codeType.codeTypeName}"
+                                        th:selected="${codeType.codeTypeId == codeTypeId}">
+                                </option>
+                            </th:block>
+                            <option value="-1">其它</option>
+                        </select>
+                    </div>
+                    <div id="otherType" class="form-group">
+                        <label for="otherTypeName">其它模块类型</label>
+                        <input type="text" id="otherTypeName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="selectedCodeName">组织名</label>
+                        <input type="hidden" id="selectedCodeId" th:value="${codeId}" />
+                        <input type="text" class="form-control" id="selectedCodeName" placeholder="请输入模块名" th:value="${codeName}" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveCode">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $.poa.code.initModal();
+    });
+</script>

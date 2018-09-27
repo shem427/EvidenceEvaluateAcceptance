@@ -5,10 +5,10 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     <span class="fa fa-times"></span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel" th:if="${deptId == null}">
+                <h4 class="modal-title" id="deptModalLabel" th:if="${deptId == null}">
                     添加组织
                 </h4>
-                <h4 class="modal-title" id="myModalLabel" th:if="${deptId != null}">
+                <h4 class="modal-title" id="deptModalLabel" th:if="${deptId != null}">
                     编辑组织
                 </h4>
             </div>
