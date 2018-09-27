@@ -15,24 +15,20 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>模块类型</label>
-                                <select class="form-control">
-                                    <option></option>
-                                    <option>案件类型</option>
-                                    <option>检材类型</option>
-                                    <option>专项行动</option>
+                                <select class="form-control" id="codeType">
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>模块名</label>
-                                <input type="text" class="form-control" placeholder="支持模糊查询" />
+                                <input type="text" class="form-control" placeholder="支持模糊查询" id="codeNameLike" />
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <button type="button" class="btn btn-primary">查询</button>
+                            <button type="button" class="btn btn-primary" id="codeSearch">查询</button>
                         </div>
                     </div>
                 </form>
@@ -48,11 +44,12 @@
             </div>
             <div class="panel-body">
                 <div class="table-toolbar">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#createCodeModal"><i class="fa fa-plus"></i>添加</button>
-                    <button class="btn btn-default"><i class="fa fa-trash"></i>删除</button>
+                    <button class="btn btn-default" id="addCode"><i class="fa fa-plus"></i>添加</button>
+                    <button class="btn btn-default" id="editCode"><i class="fa fa-pencil"></i>编辑</button>
+                    <button class="btn btn-default" id="deleteCode"><i class="fa fa-trash"></i>删除</button>
                 </div>
-                <table class="table table-striped table-bordered table-hover">
-                    <thead>
+                <table id="codeTable" class="table table-striped table-bordered table-hover">
+                    <!--<thead>
                     <tr>
                         <th class="selection-col">&nbsp;</th>
                         <th>模块编码</th>
@@ -103,9 +100,15 @@
                         <td>专项行动</td>
                         <td>HHHHHH</td>
                     </tr>
-                    </tbody>
+                    </tbody>-->
                 </table>
             </div>
         </div>
     </div>
 </div>
+<script th:src="@{/script/code.js}"></script>
+<script>
+    $(function() {
+        $.poa.code.init();
+    });
+</script>

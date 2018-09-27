@@ -76,6 +76,7 @@ $(function() {
                         // 初始化已选择人员列表
                         var selectedUsers = $('#selectedUsers', dialog);
                         var selectUsersBtn = $('#selectUsers', dialog);
+                        selectedUsers.empty();
                         $.each(managers, function(indx, item) {
                             var option = $('<option></option>');
                             option.val(item.userId);

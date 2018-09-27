@@ -755,3 +755,6 @@ div.modal-footer {
 .ztree span {
     font-size: 14px;
 }
+div.fixed-table-toolbar{
+    display: none;
+}

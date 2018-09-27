@@ -7,6 +7,8 @@ public class DBConstant {
     private DBConstant() {
     }
 
+    // COMMON
+    public static final String IS_ACTIVE = "ACTIVE";
     // USER TABLE
     public static final String USER_TABLE = "USER";
     public static final String USER_ID = "USER_ID";
@@ -30,7 +32,7 @@ public class DBConstant {
     // CODE
     public static final String CODE_TABLE = "CODE";
     public static final String CODE_ID = "CODE_ID";
-    public static final String CODE_TYPE_ID = "CODE_TYPE";
+    public static final String CODE_TYPE_ID = "CODE_TYPE_ID";
     public static final String CODE_TYPE_NAME = "CODE_TYPE_NAME";
     public static final String CODE_NAME = "CODE_NAME";
 }

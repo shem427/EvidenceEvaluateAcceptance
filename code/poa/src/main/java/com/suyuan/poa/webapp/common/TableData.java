@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class TableData<T> {
+public class TableData<T> extends CommonBean {
     private int total;
     private List<T> rows;
 }

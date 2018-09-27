@@ -35,7 +35,7 @@ $(function() {
                         dialog.on('hidden.bs.modal', function() {
                             dialog.empty().remove();
                         });
-                        dialog.on('shown.bs.modal', function() {
+                        dialog.on('show.bs.modal', function() {
                             if (options.afterDisplaying) {
                                 options.afterDisplaying(dialog);
                             }
@@ -197,6 +197,9 @@ $(function() {
                     }
                 }
             };
+            if (options.contentType) {
+                ajaxOptions.contentType = options.contentType;
+            }
             $.ajax(ajaxOptions);
         },
         ajaxFileUpload: function(options, importData) {
@@ -337,7 +340,9 @@ $(function() {
                     showColumns: options.showColumns === true,
                     showRefresh: options.showRefresh === true,
                     onCheck: options.onCheck,
+                    onCheckAll: options.onCheckAll,
                     onUncheck: options.onUncheck,
+                    onUncheckAll: options.onUncheckAll,
                     onLoadSuccess: options.onLoadSuccess,
                     onLoadError: options.onLoadError
                 });
@@ -345,6 +350,13 @@ $(function() {
             refresh: function(options) {
                 var $table = $(options.selector);
                 $table.bootstrapTable('refresh', options.params);
+            },
+            check: function(selector, indx) {
+                var $table = $(selector);
+                $table.bootstrapTable('check', indx);
+            },
+            getSelections: function(selector) {
+                return $(selector).bootstrapTable('getSelections');
             }
         }
     };

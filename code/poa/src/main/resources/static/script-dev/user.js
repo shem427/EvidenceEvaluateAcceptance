@@ -18,7 +18,6 @@ $(function() {
             });
         },
         _initModalUserTable: function() {
-            var selectedUsersList = $('#selectedUsers');
             $.poa.table.create({
                 selector: '#modalUsersTable',
                 url: 'user/userList',
@@ -46,23 +45,71 @@ $(function() {
                         nameLike: nameLike
                     };
                 },
-                onCheck: function(row) {
-                    var option = $('<option></option>');
-                    option.val(row.userId);
-                    option.text(row.name + '(' + row.policeNumber + ')');
-                    option.appendTo(selectedUsersList);
+                onCheck: self._tableCheck,
+                onCheckAll: function(rows) {
+                    if (rows && $.isArray(rows)) {
+                        $.each(rows, function (indx, row) {
+                            self._tableCheck(row);
+                        });
+                    }
                 },
-                onUncheck: function(row) {
-                    var options = selectedUsersList.find('option');
-                    options.each(function(indx, item) {
-                        var opt = $(item);
-                        if (opt.val() === row.userId) {
-                            opt.remove();
-                            return false;
+                onUncheck: self._tableUncheck,
+                onUncheckAll: function(rows) {
+                    if (rows && $.isArray(rows)) {
+                        $.each(rows, function (indx, row) {
+                            self._tableUncheck(row);
+                        });
+                    }
+                },
+                onLoadSuccess: function(data) {
+                    var selectedUserIds;
+                    if (data.rows.length === 0) {
+                        return;
+                    }
+                    selectedUserIds = self._getSelectedUsers();
+                    $.each(data.rows, function(indx, item) {
+                        var userId = item.userId;
+                        if ($.inArray(userId.toString(), selectedUserIds) >= 0) {
+                            $.poa.table.check('#modalUsersTable', indx);
                         }
                     });
                 }
             });
+        },
+        _tableCheck: function(row) {
+            var selectedUsersList = $('#selectedUsers');
+            var option;
+            var selectedUserIds = self._getSelectedUsers();
+            if ($.inArray(row.userId.toString(), selectedUserIds) >= 0) {
+                return;
+            }
+            option = $('<option></option>');
+            option.val(row.userId);
+            option.text(row.name + '(' + row.policeNumber + ')');
+            option.appendTo(selectedUsersList);
+        },
+        _tableUncheck: function(row) {
+            var selectedUsersList = $('#selectedUsers');
+            var options = selectedUsersList.find('option');
+            options.each(function(indx, item) {
+                var opt = $(item);
+                if (opt.val() === row.userId.toString()) {
+                    opt.remove();
+                }
+            });
+        },
+        _getSelectedUsers: function() {
+            var selectedUserIds = [];
+            var selectedUserOptions = $('#selectedUsers > option');
+            var userOption;
+            if (!selectedUserOptions || selectedUserOptions.length === 0) {
+                return selectedUserIds;
+            }
+            for (var i = 0; i < selectedUserOptions.length; i++) {
+                userOption = $(selectedUserOptions[i]);
+                selectedUserIds.push(userOption.val());
+            }
+            return selectedUserIds;
         }
     };
     var self = $.poa.user;
