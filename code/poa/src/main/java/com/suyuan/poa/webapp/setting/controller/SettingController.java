@@ -64,4 +64,13 @@ public class SettingController {
 
         return bean;
     }
+
+    @PostMapping(value = "/updateProfile")
+    @ResponseBody
+    public CommonBean updateProfile(UserBean profile) {
+        CommonBean bean = new CommonBean();
+        // TODO:
+
+        return bean;
+    }
 }

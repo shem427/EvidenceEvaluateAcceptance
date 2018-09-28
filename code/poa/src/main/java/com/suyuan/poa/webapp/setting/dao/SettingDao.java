@@ -33,4 +33,13 @@ public class SettingDao {
 
         return password;
     }
+
+    public int updateProfile(UserBean profile) {
+        String sql = "UPDATE `USER` SET `POLICE_NUMBER`=?,`USER_NAME`=?,`PHONE_NUMBER`=? WHERE USER_ID=?";
+        return jdbcTemplate.update(sql,
+                profile.getPoliceNumber(),
+                profile.getName(),
+                profile.getPhoneNumber(),
+                profile.getUserId());
+    }
 }

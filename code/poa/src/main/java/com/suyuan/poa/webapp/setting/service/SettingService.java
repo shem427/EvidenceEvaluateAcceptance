@@ -1,6 +1,7 @@
 package com.suyuan.poa.webapp.setting.service;
 
 import com.suyuan.poa.webapp.setting.dao.SettingDao;
+import com.suyuan.poa.webapp.user.bean.UserBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,9 @@ public class SettingService {
     public int changePassword(String policeNo, String newPassword) {
         String encryptPassword = passwordEncoder.encode(newPassword);
         return settingDao.changePassword(policeNo, encryptPassword);
+    }
+
+    public int updateProfile(UserBean profile) {
+        return settingDao.updateProfile(profile);
     }
 }
