@@ -1,4 +1,5 @@
 $(function() {
+    var self;
     $.poa.setting = {
         initChangePassword: function() {
             var changePasswordBtn = $('#changePasswordBtn');
@@ -46,10 +47,7 @@ $(function() {
                 return false;
             }
             return true;
-        },
-        initUpdateProfile: function() {
-
         }
     };
-    var self = $.poa.setting;
+    self = $.poa.setting;
 });

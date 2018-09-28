@@ -1,6 +1,7 @@
 $(function() {
+    var self;
     $.poa.dept = {
-        deptTree: undefined,
+        deptTree: null,
         /**
          * 组织页面的初始化
          */
@@ -39,26 +40,29 @@ $(function() {
                     data: data,
                     success: function() {
                         var selectedNodes = $.poa.tree.getSelectedNode(self.deptTree);
-                        var parentNode, tobeSelectNode;
+                        var parentNode;
+                        var tobeSelectNode;
                         $.poa.modal.destroy({
                             selector: '#deptModal'
                         });
                         if (isEdit) {
                             parentNode = $.poa.tree.getNodeByTId(self.deptTree, selectedNodes[0].parentTId);
                             $.poa.tree.refreshNode(self.deptTree, parentNode, function() {
-                                var deptIdInt = parseInt(deptId);
+                                var deptIdInt = parseInt(deptId, 10);
                                 tobeSelectNode = $.poa.tree.getNodeByParam(self.deptTree, 'id',
                                     deptIdInt, parentNode);
-                                if (tobeSelectNode)
+                                if (tobeSelectNode) {
                                     $('#' + tobeSelectNode.tId + ' > a').trigger('click');
+                                }
                             });
                         } else {
                             $.poa.tree.refreshNode(self.deptTree, selectedNodes[0], function() {
-                                var deptIdInt = parseInt(deptId);
+                                var deptIdInt = parseInt(deptId, 10);
                                 tobeSelectNode = $.poa.tree.getNodeByParam(self.deptTree, 'id',
                                     deptIdInt, selectedNodes[0]);
-                                if (tobeSelectNode)
+                                if (tobeSelectNode) {
                                     $('#' + tobeSelectNode.tId + ' > a').trigger('click');
+                                }
                             });
                         }
                     }
@@ -86,10 +90,9 @@ $(function() {
 
                         // 设置保存按钮事件
                         selectUsersBtn.click(function() {
-                            var option,
-                                userOption,
-                                deptManagers = $('#deptManagers'),
-                                selectedUserOptions = selectedUsers.find('option');
+                            var option;
+                            var userOption;
+                            var selectedUserOptions = selectedUsers.find('option');
                             deptManagers.empty();
                             if (!selectedUserOptions || selectedUserOptions.length === 0) {
                                 $.poa.messageBox.alert($.poa.resource.USER_NO_SELECTION);
@@ -183,13 +186,14 @@ $(function() {
          * @private
          */
         _getDeptManagers: function(deptId, selectedDeptManagers) {
-                $.poa.ajax({
+            $.poa.ajax({
                 url: 'dept/getManagers',
                 type: 'get',
                 dataType: 'json',
                 data: {deptId: deptId},
                 success: function(data) {
-                    var option, user;
+                    var option;
+                    var user;
                     selectedDeptManagers.empty();
                     if (!data || data.length === 0) {
                         return;
@@ -231,9 +235,9 @@ $(function() {
             });
             editDeptBtn.click(function() {
                 var selectedNodes = $.poa.tree.getSelectedNode(self.deptTree);
-                var selectedNode,
-                    parentNode,
-                    data;
+                var selectedNode;
+                var parentNode;
+                var data;
                 if (selectedNodes && selectedNodes.length > 0) {
                     selectedNode = selectedNodes[0];
                     parentNode = $.poa.tree.getNodeByTId(self.deptTree, selectedNode.parentTId);
@@ -291,5 +295,5 @@ $(function() {
             $('#selectedDeptManagers').empty();
         }
     };
-    var self = $.poa.dept;
+    self = $.poa.dept;
 });

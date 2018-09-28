@@ -1,4 +1,5 @@
 $(function() {
+    var self;
     $.poa.code = {
         init: function() {
             // get all code type and set to code type select..
@@ -52,7 +53,7 @@ $(function() {
                     var codeNameLike = $('#codeNameLike').val();
                     return {
                         limit: params.limit,
-                        offset:params.offset,
+                        offset: params.offset,
                         sortOrder: params.order,
                         sortField: params.sort,
                         codeTypeId: codeTypeId,
@@ -116,7 +117,7 @@ $(function() {
                             dataType: 'json',
                             contentType: 'application/json',
                             data: JSON.stringify(codeIdList),
-                            success: function(data) {
+                            success: function() {
                                 $('#codeSearch').trigger('click');
                                 $.poa.messageBox.info($.poa.resource.CODE_DELETE_SUCCESS);
                             }
@@ -177,5 +178,5 @@ $(function() {
             });
         }
     };
-    var self = $.poa.code;
+    self = $.poa.code;
 });

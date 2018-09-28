@@ -1,16 +1,48 @@
 $(function() {
+    var self;
     $.poa.user = {
+        init: function() {
+            self._initUserTable();
+            self._initButtonEvt('#usersTable');
+        },
+        _initUserTable: function() {
+            $.poa.table.create({
+                selector: '#usersTable',
+                url: 'user/userList',
+                sortName: 'POLICE_NUMBER',
+                pageSize: 5,
+                pageList: [5, 10, 20, 50],
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'policeNumber',
+                    title: '警号'
+                }, {
+                    field: 'name',
+                    title: '姓名'
+                }],
+                queryParams: function(params) {
+                    var policeNoLike = $('#policeNo').val();
+                    var nameLike = $('#userName').val();
+                    return {
+                        limit: params.limit,
+                        offset: params.offset,
+                        sortOrder: params.order,
+                        sortField: params.sort,
+                        policeNoLike: policeNoLike,
+                        nameLike: nameLike
+                    };
+                }
+            });
+        },
         initModalUsers: function() {
             self._initModalUserTable();
-            self._initButtonEvt();
+            self._initButtonEvt('#modalUsersTable');
         },
-        _initSelected: function() {
-
-        },
-        _initButtonEvt: function() {
+        _initButtonEvt: function(tableSelector) {
             $('#userSearch').click(function() {
                 $.poa.table.refresh({
-                    selector: '#modalUsersTable',
+                    selector: tableSelector,
                     params: {
                         silent: true
                     }
@@ -38,7 +70,7 @@ $(function() {
                     var nameLike = $('#userName').val();
                     return {
                         limit: params.limit,
-                        offset:params.offset,
+                        offset: params.offset,
                         sortOrder: params.order,
                         sortField: params.sort,
                         policeNoLike: policeNoLike,
@@ -48,7 +80,7 @@ $(function() {
                 onCheck: self._tableCheck,
                 onCheckAll: function(rows) {
                     if (rows && $.isArray(rows)) {
-                        $.each(rows, function (indx, row) {
+                        $.each(rows, function(indx, row) {
                             self._tableCheck(row);
                         });
                     }
@@ -56,7 +88,7 @@ $(function() {
                 onUncheck: self._tableUncheck,
                 onUncheckAll: function(rows) {
                     if (rows && $.isArray(rows)) {
-                        $.each(rows, function (indx, row) {
+                        $.each(rows, function(indx, row) {
                             self._tableUncheck(row);
                         });
                     }
@@ -112,5 +144,5 @@ $(function() {
             return selectedUserIds;
         }
     };
-    var self = $.poa.user;
+    self = $.poa.user;
 });

@@ -1,9 +1,9 @@
 $(function() {
     // ajax global setting for csrf.
     $.ajaxSetup({
-        beforeSend : function(xhr) {
+        beforeSend: function(xhr) {
             var header = $("meta[name='_csrf_header']").attr("content");
-            var token =$("meta[name='_csrf']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
             xhr.setRequestHeader(header, token);
         },
         error: function() {
@@ -18,13 +18,13 @@ $(function() {
             create: function(options) {
                 var ajaxOptions = {
                     url: $.poa.contextPath + options.url,
-                    traditional : true,
+                    traditional: true,
                     type: options.type || "get",
                     data: options.data || {},
                     dataType: options.dataType || "html",
-                    async: options.async === false ? false : true,
+                    async: options.async !== false,
                     cache: false,
-                    success: function (data) {
+                    success: function(data) {
                         var dialog = $(data);
                         // create dialog
                         $("body").append(dialog);
@@ -52,46 +52,46 @@ $(function() {
         },
         messageBox: {
             alert: function(message, title, callback) {
-                var title = title || $.poa.resource.ALERT;
-                $.poa.messageBox._message("alert", message, title, callback);
+                var newTitle = title || $.poa.resource.ALERT;
+                $.poa.messageBox._message("alert", message, newTitle, callback);
             },
             error: function(message, title, callback) {
-                var title = title || $.poa.resource.ERROR;
-                $.poa.messageBox._message("error", message, title, callback);
+                var newTitle = title || $.poa.resource.ERROR;
+                $.poa.messageBox._message("error", message, newTitle, callback);
             },
             confirm: function(message, title, callback) {
-                var title = title || $.poa.resource.CONFIRM;
-                $.poa.messageBox._message("confirm", message, title, callback);
+                var newTitle = title || $.poa.resource.CONFIRM;
+                $.poa.messageBox._message("confirm", message, newTitle, callback);
             },
             info: function(message, title, callback) {
-                var title = title || $.poa.resource.INFO;
-                $.poa.messageBox._message("info", message, title, callback);
+                var newTitle = title || $.poa.resource.INFO;
+                $.poa.messageBox._message("info", message, newTitle, callback);
             },
             _message: function(type, message, title, callback) {
-                var dialog = $("#poaMsgModal"),
-                    modalType = type.toLowerCase(),
-                    dialogHtml,
-                    dialogHeader,
-                    dialogContent,
-                    dialogBody,
-                    dialogFooter;
-                title = title || "";
+                var dialog = $("#poaMsgModal");
+                var modalType = type.toLowerCase();
+                var dialogHtml;
+                var dialogHeader;
+                var dialogContent;
+                var dialogBody;
+                var dialogFooter;
+
                 if (dialog.length > 0) {
                     dialog.empty().remove();
                 }
 
-                dialogHtml =
-                    "<div class='modal fade' id='poaMsgModal' tabindex='-1' role='dialog' aria-labelledby='poaMsgModalLabel' aria-hidden='true'>" +
-                    "    <div class='modal-dialog'>" +
-                    "        <div class='modal-content'>" +
-                    "            <div class='modal-header'>" +
-                    "                <h4 class='modal-title' id='poaMsgModalLabel'></h4>" +
-                    "            </div>" +
-                    "            <div class='modal-body'></div>" +
-                    "            <div class='modal-footer'></div>" +
-                    "        </div>" +
-                    "    </div>" +
-                    "</div>";
+                dialogHtml = "<div class='modal fade' id='poaMsgModal' tabindex='-1' role='dialog'"
+                    + " aria-labelledby='poaMsgModalLabel' aria-hidden='true'>"
+                    + "    <div class='modal-dialog'>"
+                    + "        <div class='modal-content'>"
+                    + "            <div class='modal-header'>"
+                    + "                <h4 class='modal-title' id='poaMsgModalLabel'></h4>"
+                    + "            </div>"
+                    + "            <div class='modal-body'></div>"
+                    + "            <div class='modal-footer'></div>"
+                    + "        </div>"
+                    + "    </div>"
+                    + "</div>";
                 dialog = $(dialogHtml);
                 // create dialog
                 $("body").append(dialog);
@@ -106,7 +106,8 @@ $(function() {
                 if (modalType === 'alert') {
                     dialogHeader.html('<i class="fa fa-warning fa-fw"></i>' + title);
                     dialogContent.addClass('modal-alert');
-                    dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">' + $.poa.resource.OK + '</button>');
+                    dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">'
+                        + $.poa.resource.OK + '</button>');
                     dialogFooter.children('button').click(function() {
                         if (callback) {
                             callback();
@@ -116,7 +117,8 @@ $(function() {
                 } else if (modalType === 'error') {
                     dialogHeader.html('<i class="fa fa-window-close-o fa-fw"></i>' + title);
                     dialogContent.addClass('modal-error');
-                    dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">' + $.poa.resource.OK + '</button>');
+                    dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">'
+                        + $.poa.resource.OK + '</button>');
                     dialogFooter.children('button').click(function() {
                         if (callback) {
                             callback();
@@ -126,8 +128,10 @@ $(function() {
                 } else if (modalType === 'confirm') {
                     dialogHeader.html('<i class="fa fa-question-circle-o fa-fw"></i>' + title);
                     dialogContent.addClass('modal-confirm');
-                    dialogFooter.append('<button type="button" class="btn btn-sm btn-default">' + $.poa.resource.NO + '</button>');
-                    dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">' + $.poa.resource.YES + '</button>');
+                    dialogFooter.append('<button type="button" class="btn btn-sm btn-default">'
+                        + $.poa.resource.NO + '</button>');
+                    dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">'
+                        + $.poa.resource.YES + '</button>');
                     dialogFooter.children('button:eq(0)').click(function() {
                         if (callback && callback.no) {
                             callback.no();
@@ -143,7 +147,8 @@ $(function() {
                 } else if (modalType === 'info') {
                     dialogHeader.html('<i class="fa fa-info-circle fa-fw"></i>' + title);
                     dialogContent.addClass('modal-info');
-                    dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">' + $.poa.resource.OK + '</button>');
+                    dialogFooter.append('<button type="button" class="btn btn-sm btn-primary">'
+                        + $.poa.resource.OK + '</button>');
                     dialogFooter.children('button').click(function() {
                         if (callback) {
                             callback();
@@ -167,22 +172,24 @@ $(function() {
         ajax: function(options) {
             var ajaxOptions = {
                 url: $.poa.contextPath + options.url,
-                traditional : true,
+                traditional: true,
                 type: options.type || "get",
                 data: options.data || {},
                 dataType: options.dataType || "json",
-                async: options.async === false ? false : true,
+                async: options.async !== false,
                 cache: false,
-                complete: function (data) {
+                complete: function(data) {
                     if ($.isFunction(options.complete)) {
                         options.complete(data);
                     }
                 },
-                success: function (data) {
+                success: function(retData) {
+                    var data = retData;
                     if (options.dataType === "html") {
                         try {
-                            data = $.parseJSON(data);
+                            data = $.parseJSON(retData);
                         } catch (ex) {
+                            // ignore.
                         }
                     }
                     if (data.status === 'ERROR') {
@@ -204,13 +211,13 @@ $(function() {
         },
         ajaxFileUpload: function(options, importData) {
             var ajaxOptions = {
-                url : $.poa.contextPath + options.url,
-                data : importData,
-                secureuri : false,
-                fileElementId : options.fileId,
-                dataType : options.dataType || "json",
-                success : options.success,
-                complete: function (data) {
+                url: $.poa.contextPath + options.url,
+                data: importData,
+                secureuri: false,
+                fileElementId: options.fileId,
+                dataType: options.dataType || "json",
+                success: options.success,
+                complete: function(data) {
                     if ($.isFunction(options.complete)) {
                         options.complete(data);
                     }
@@ -232,7 +239,7 @@ $(function() {
                     }
                     return cache;
                 } else {
-                    return undefined;
+                    return null;
                 }
             },
             set: function(name, value) {
@@ -312,13 +319,12 @@ $(function() {
                     sortName: options.sortName,
                     sortOrder: 'asc',
                     queryParams: options.queryParams || function(params) {
-                        var qParam = {
+                        return {
                             limit: params.limit,
-                            offset:params.offset,
+                            offset: params.offset,
                             sortOrder: params.order,
                             sortField: params.sort
                         };
-                        return qParam;
                     },
                     ajaxOptions: options.ajaxOptions,
                     sidePagination: 'server',

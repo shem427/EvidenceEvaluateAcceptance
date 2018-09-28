@@ -1,5 +1,6 @@
 // init for parent page.
 $(function() {
+    var self;
     $.poa.index = {
         init: function() {
             // menu link.
@@ -97,5 +98,5 @@ $(function() {
             });
         }
     };
-    var self = $.poa.index;
+    self = $.poa.index;
 });
