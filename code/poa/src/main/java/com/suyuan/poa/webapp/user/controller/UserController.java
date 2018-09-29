@@ -1,6 +1,5 @@
 package com.suyuan.poa.webapp.user.controller;
 
-import com.suyuan.poa.webapp.common.CommonBean;
 import com.suyuan.poa.webapp.common.SearchParam;
 import com.suyuan.poa.webapp.common.TableData;
 import com.suyuan.poa.webapp.user.bean.UserBean;
