@@ -47,55 +47,27 @@
                     <button class="btn btn-default"><i class="fa fa-plus"></i>添加</button>
                     <button class="btn btn-default"><i class="fa fa-pencil"></i>编辑</button>
                     <button class="btn btn-default"><i class="fa fa-trash"></i>删除</button>
-                    <button class="btn btn-default">导入</button>
-                    <button class="btn btn-default">导出</button>
+                    <div class="btn-group">
+                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            导入<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" id="downloadTemplateLink">下载模板</a></li>
+                            <li><a href="#" id="importFileLink">导入文件</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            导出<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" id="exportAllLink">导出全部</a></li>
+                            <li><a href="#" id="exportCurrentPageLink">导出本页</a></li>
+                            <li><a href="#" id="exportSelectionLink">导出选择</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <table id="usersTable" class="table table-striped table-bordered table-hover">
-                    <!--<thead>
-                    <tr>
-                        <th class="selection-col">&nbsp;</th>
-                        <th>警号</th>
-                        <th>姓名</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="selection-col"><input type="checkbox" /></td>
-                        <td><a href="#" data-toggle="modal" data-target="#updateUserModal">092384</a></td>
-                        <td>张三</td>
-                    </tr>
-                    <tr>
-                        <td class="selection-col"><input type="checkbox" /></td>
-                        <td><a href="#" data-toggle="modal" data-target="#updateUserModal">092385</a></td>
-                        <td>李四</td>
-                    </tr>
-                    <tr>
-                        <td class="selection-col"><input type="checkbox" /></td>
-                        <td><a href="#" data-toggle="modal" data-target="#updateUserModal">092386</a></td>
-                        <td>王五</td>
-                    </tr>
-                    <tr>
-                        <td class="selection-col"><input type="checkbox" /></td>
-                        <td><a href="#" data-toggle="modal" data-target="#updateUserModal">092387</a></td>
-                        <td>朱八</td>
-                    </tr>
-                    <tr>
-                        <td class="selection-col"><input type="checkbox" /></td>
-                        <td><a href="#" data-toggle="modal" data-target="#updateUserModal">092388</a></td>
-                        <td>赵一</td>
-                    </tr>
-                    <tr>
-                        <td class="selection-col"><input type="checkbox" /></td>
-                        <td><a href="#" data-toggle="modal" data-target="#updateUserModal">092389</a></td>
-                        <td>钱七</td>
-                    </tr>
-                    <tr>
-                        <td class="selection-col"><input type="checkbox" /></td>
-                        <td><a href="#" data-toggle="modal" data-target="#updateUserModal">092390</a></td>
-                        <td>孙二</td>
-                    </tr>
-                    </tbody>-->
-                </table>
+                <table id="usersTable" class="table table-striped table-bordered table-hover"></table>
             </div>
         </div>
     </div>

@@ -4,6 +4,7 @@ $(function() {
         init: function() {
             self._initUserTable();
             self._initButtonEvt('#usersTable');
+            self._initLinkEvt();
         },
         _initUserTable: function() {
             $.poa.table.create({
@@ -34,6 +35,18 @@ $(function() {
                     };
                 }
             });
+        },
+        _initLinkEvt: function() {
+            // 导入文件
+            var importFileLink = $('#importFileLink');
+            // 导出全部
+            var exportAllLink = $('#exportAllLink');
+            // 导出本页
+            var exportCurrentPageLink = $('#exportCurrentPageLink');
+            // 导出选择
+            var exportSelectionLink = $('#exportSelectionLink');
+
+
         },
         initModalUsers: function() {
             self._initModalUserTable();
