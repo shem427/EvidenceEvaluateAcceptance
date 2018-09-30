@@ -66,10 +66,11 @@ public class UserDao extends CommonDao<UserBean> {
         sbSQL.append(" FROM ");
         sbSQL.append(DBConstant.USER_TABLE).append(" U,").append(DBConstant.DEPT_TABLE).append(" D");
         sbSQL.append(" WHERE ");
-        sbSQL.append("U.").append(DBConstant.DEPT_ID).append("=").append("D.").append(DBConstant.DEPT_ID);
+        sbSQL.append(DBConstant.IS_ACTIVE).append("=true");
+        sbSQL.append(" AND U.").append(DBConstant.DEPT_ID).append("=").append("D.").append(DBConstant.DEPT_ID);
         sbSQL.append(" AND U.").append(DBConstant.POLICE_NUMBER).append("=?");
 
-        UserBean bean = jdbcTemplate.query(sbSQL.toString(),
+        return jdbcTemplate.query(sbSQL.toString(),
                 new String[] {policeNumber}, rs -> {
                     UserBean u = null;
                     while(rs.next()) {
@@ -77,7 +78,6 @@ public class UserDao extends CommonDao<UserBean> {
                     }
                     return u;
                 });
-        return bean;
     }
 
     /**
@@ -86,7 +86,7 @@ public class UserDao extends CommonDao<UserBean> {
      * @return Bean对象
      * @throws SQLException SQL例外
      */
-    public UserBean convertBeanWithDept(ResultSet rs) throws SQLException {
+    private UserBean convertBeanWithDept(ResultSet rs) throws SQLException {
         UserBean bean = convertBean(rs);
         bean.setDeptId(rs.getInt(DBConstant.DEPT_ID));
         bean.setDeptName(rs.getString(DBConstant.DEPT_NAME));
@@ -127,12 +127,11 @@ public class UserDao extends CommonDao<UserBean> {
 
     /**
      * 根据制定条件检索符合条件的人员件数。
-     * @param param 共通检索条件
      * @param policeNoLike 警号模糊条件
      * @param nameLike 姓名模糊条件
      * @return 符合条件人员件数
      */
-    public int count(SearchParam param, String policeNoLike, String nameLike) {
+    public int count(String policeNoLike, String nameLike) {
         // parameter
         List<String> argList = new ArrayList<>();
 
@@ -152,18 +151,79 @@ public class UserDao extends CommonDao<UserBean> {
         });
     }
 
+    /**
+     * 删除人员（逻辑删除）。
+     * @param userId 人员ID
+     * @return 删除件数
+     */
+    public int deleteUser(int userId) {
+        StringBuilder sbSQL = new StringBuilder();
+        sbSQL.append("UPDATE ").append(DBConstant.USER_TABLE);
+        sbSQL.append(" SET ").append(DBConstant.IS_ACTIVE).append("=false");
+        sbSQL.append(" WHERE ").append(DBConstant.USER_ID).append("=?");
+
+        return jdbcTemplate.update(sbSQL.toString(), userId);
+    }
+
+    /**
+     * 添加人员
+     * @param user 人员信息
+     * @return 添加人员的ID
+     */
+    public int addUser(UserBean user) {
+        StringBuilder sbSQL = new StringBuilder();
+        sbSQL.append("INSERT INTO ").append(DBConstant.USER_TABLE);
+        sbSQL.append("(");
+        sbSQL.append(DBConstant.USER_NAME).append(",");
+        sbSQL.append(DBConstant.POLICE_NUMBER).append(",");
+        sbSQL.append(DBConstant.PHONE_NUMBER).append(",");
+        sbSQL.append(DBConstant.USER_ROLE).append(",");
+        sbSQL.append(DBConstant.PASSWORD).append(",");
+        sbSQL.append(DBConstant.DEPT_ID).append(",");
+        sbSQL.append(DBConstant.IS_ACTIVE);
+        sbSQL.append(") VALUES (?,?,?,?,?,?,true)");
+
+        int count = jdbcTemplate.update(sbSQL.toString(),
+                user.getName(),
+                user.getPoliceNumber(),
+                user.getPhoneNumber(),
+                user.getUserRoles(),
+                user.getPassword(),
+                user.getDeptId());
+        if (count > 0) {
+            return getLastInsertId();
+        }
+        return 0;
+    }
+
+    /**
+     * 更新人员信息。
+     * @param user 人员信息
+     * @return 更新件数
+     */
+    public int updateUser(UserBean user) {
+        String sql = "UPDATE `USER` SET "
+                + "`USER_NAME`=?,`POLICE_NUMBER`=?,`PHONE_NUMBER`=?,`DEPT_ID`=?,`USER_ROLE`=?"
+                + " WHERE `USER_ID`=?";
+        return jdbcTemplate.update(sql,
+                user.getName(),
+                user.getPoliceNumber(),
+                user.getPhoneNumber(),
+                user.getDeptId(),
+                user.getUserRoles(),
+                user.getPassword());
+    }
+
     private String getWhereForSearch(String policeNoLike, String nameLike, List<String> argList) {
         StringBuilder sbSqlWhere = new StringBuilder();
+        sbSqlWhere.append(DBConstant.IS_ACTIVE).append("=true");
         if (!StringUtils.isEmpty(policeNoLike)) {
             argList.add("%" + policeNoLike + "%");
-            sbSqlWhere.append(DBConstant.POLICE_NUMBER).append(" LIKE ?");
+            sbSqlWhere.append(" AND ").append(DBConstant.POLICE_NUMBER).append(" LIKE ?");
         }
         if (!StringUtils.isEmpty(nameLike)) {
             argList.add("%" + nameLike + "%");
-            if (sbSqlWhere.length() > 0) {
-                sbSqlWhere.append(" AND ");
-            }
-            sbSqlWhere.append(DBConstant.USER_NAME).append(" LIKE ? ");
+            sbSqlWhere.append(" AND ").append(DBConstant.USER_NAME).append(" LIKE ? ");
         }
         return sbSqlWhere.toString();
     }

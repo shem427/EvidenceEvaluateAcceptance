@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.File;
 import java.security.MessageDigest;
-import java.util.List;
 
 /**
  * utility类。

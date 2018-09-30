@@ -6,8 +6,11 @@ $(function() {
             var token = $("meta[name='_csrf']").attr("content");
             xhr.setRequestHeader(header, token);
         },
-        error: function() {
-            console.log("error");
+        error: function(xhr, status, error) {
+            console.log(error);
+            if (xhr.status === 401) {
+                location.reload(true);
+            }
         }
     });
 

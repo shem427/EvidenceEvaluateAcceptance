@@ -2,10 +2,12 @@ package com.suyuan.poa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * spring boot startup class.
  */
+@EnableTransactionManagement(proxyTargetClass = true)
 @SpringBootApplication
 public class PoaApplication {
 
