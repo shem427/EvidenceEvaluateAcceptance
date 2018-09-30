@@ -69,6 +69,15 @@ $(function() {
             $updateProfileLink.click(updateProfile);
             $updateProfileSettingLink.click(updateProfile);
 
+            $logoutLink.click(function(e) {
+                e.preventDefault();
+                $.poa.messageBox.confirm($.poa.resource.LOG_OUT_CONFIRM, '', {
+                    yes: function() {
+                        $('#logoutForm').submit();
+                    }
+                });
+            });
+
             // 模块管理
             $codeLink.click(function(e) {
                 e.preventDefault();

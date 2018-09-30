@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Web Security配置类。
@@ -56,7 +57,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry)
                 .and().and()
-                .logout().logoutSuccessUrl("/login").invalidateHttpSession(true).clearAuthentication(true)
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login").invalidateHttpSession(true).clearAuthentication(true)
                 .and()
                 .httpBasic();
     }

@@ -11,6 +11,8 @@ $(function() {
         YES: '是',
         NO: '否',
 
+        LOG_OUT_CONFIRM: '请确认是否注销？',
+
         DEPT_NO_SELECTION: '请选择组织节点。',
         DEPT_DELETE_CONFIRM: '确定要删除组织？<br/>&nbsp;&nbsp;&nbsp;&nbsp;组织名：',
         USER_NO_SELECTION: '选择人员为空，请选择人员，然后点击保存。',

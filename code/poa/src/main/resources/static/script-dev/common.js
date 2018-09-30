@@ -185,6 +185,9 @@ $(function() {
                 },
                 success: function(retData) {
                     var data = retData;
+                    if (!data) {
+                        return;
+                    }
                     if (options.dataType === "html") {
                         try {
                             data = $.parseJSON(retData);
