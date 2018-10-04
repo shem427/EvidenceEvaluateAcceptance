@@ -1,0 +1,50 @@
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="fa fa-times"></span>
+                </button>
+                <h4 class="modal-title" id="userModalLabel" th:if="${userId == null}">
+                    添加人员
+                </h4>
+                <h4 class="modal-title" id="userModalLabel" th:if="${userId != null}">
+                    添加人员
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="policeNumber">警号</label>
+                        <input type="hidden" th:value="${userId}" id="userId" />
+                        <input type="text" class="form-control" id="policeNumber" th:value="${policeNumber}" placeholder="请输入警号" />
+                    </div>
+                    <div class="form-group">
+                        <label for="userName">姓名</label>
+                        <input type="text" class="form-control" id="userName" th:value="${name}" placeholder="请输入姓名" />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">电话</label>
+                        <input type="text" class="form-control" id="phone" th:value="${phoneNumber}" placeholder="请输入电话号码" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dept">所属单位</label>
+                        <input type="hidden" th:value="${deptId}" />
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="dept" th:value="${deptName}" readonly="readonly" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-date" type="button" id="selectDept">
+                                    <span class="fa fa-building"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveUser">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

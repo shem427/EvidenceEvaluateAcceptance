@@ -5,8 +5,9 @@ import com.suyuan.poa.webapp.common.MessageService;
 import com.suyuan.poa.webapp.dept.bean.DeptBean;
 import com.suyuan.poa.webapp.dept.service.DeptService;
 import com.suyuan.poa.webapp.user.bean.UserBean;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/dept")
 public class DeptController {
-    /** 日志 */
-    private static final Log LOG = LogFactory.getLog(DeptController.class);
+    /** LOG */
+    private static final Logger LOG = LoggerFactory.getLogger(DeptController.class);
 
     /** 组织service对象 */
     @Autowired
@@ -50,11 +51,16 @@ public class DeptController {
     @GetMapping(value = "/subDept")
     @ResponseBody
     public List<DeptBean> getSubDept(Integer id) {
+        LOG.debug(messageService.getLogEntry("poa.dept.sub"));
+
         int deptId = 0;
         if (id != null) {
             deptId = id.intValue();
         }
-        return deptService.getSubDept(deptId);
+        List<DeptBean> subList = deptService.getSubDept(deptId);
+
+        LOG.debug(messageService.getLogExit("poa.dept.sub"));
+        return subList;
     }
 
     /**
@@ -108,6 +114,8 @@ public class DeptController {
     @PostMapping(value = "/saveDept")
     @ResponseBody
     public CommonBean saveDept(DeptBean dept) {
+        LOG.debug(messageService.getLogEntry("poa.dept.save"));
+
         CommonBean bean = new CommonBean();
         try {
             int deptId = dept.getId();
@@ -119,11 +127,13 @@ public class DeptController {
                 deptService.add(dept);
             }
         } catch (Exception e) {
-            String message = messageService.getMessage("poa.save.dept.error");
+            String message = messageService.getMessage("poa.server.error");
             LOG.error(message, e);
             bean.setStatus(CommonBean.Status.ERROR);
             bean.setMessage(message);
         }
+
+        LOG.debug(messageService.getLogExit("poa.dept.save"));
         return bean;
     }
 
@@ -135,6 +145,8 @@ public class DeptController {
     @PostMapping(value = "deleteDept")
     @ResponseBody
     public CommonBean deleteDept(int deptId) {
+        LOG.debug(messageService.getLogEntry("poa.dept.delete"));
+
         CommonBean retBean = new CommonBean();
         try {
             boolean hasChildren = deptService.hasChildren(deptId);
@@ -143,18 +155,18 @@ public class DeptController {
                 String message = messageService.getMessage("poa.delete.dept.hasChildren");
                 retBean.setStatus(CommonBean.Status.WARNING);
                 retBean.setMessage(message);
-                return retBean;
             } else {
                 deptService.delete(deptId);
-                return retBean;
             }
         } catch (Exception e) {
-            String message = messageService.getMessage("poa.delete.dept.error");
+            String message = messageService.getMessage("poa.server.error");
             LOG.error(message, e);
             retBean.setStatus(CommonBean.Status.ERROR);
             retBean.setMessage(message);
-            return retBean;
         }
+
+        LOG.debug(messageService.getLogExit("poa.dept.delete"));
+        return retBean;
     }
 
     /**
@@ -165,6 +177,11 @@ public class DeptController {
     @GetMapping(value = "getManagers")
     @ResponseBody
     public List<UserBean> getDeptManagers(int deptId) {
-        return deptService.getDeptManagers(deptId);
+        LOG.debug(messageService.getLogEntry("poa.dept.getManagers"));
+
+        List<UserBean> managerList = deptService.getDeptManagers(deptId);
+
+        LOG.debug(messageService.getLogExit("poa.dept.getManagers"));
+        return managerList;
     }
 }

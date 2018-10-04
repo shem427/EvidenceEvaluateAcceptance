@@ -2,6 +2,7 @@ $(function() {
     var self;
     $.poa.dept = {
         deptTree: null,
+        // ------------------------------------- 组织管理页面 开始-------------------------------------------------
         /**
          * 组织页面的初始化
          */
@@ -11,6 +12,129 @@ $(function() {
             // init button event.
             self._initButtonEvt();
         },
+        /**
+         * 组织树的初始化
+         * @private
+         */
+        _initTree: function() {
+            self.deptTree = $.poa.tree.create({
+                selector: '#deptTree',
+                url: 'dept/subDept',
+                checkEnabled: false,
+                editEnabled: false,
+                selectedMulti: false,
+                callback: {
+                    onNodeCreated: function(event, treeId, treeNode) {
+                        if (treeNode.id === 1) {
+                            self.deptTree.expandNode(treeNode, true, false, true, true);
+                        }
+                    },
+                    beforeClick: function(treeId, treeNode, clickFlag) {
+                        var selectedDeptId = $('#selectedDeptId');
+                        var selectedDeptName = $('#selectedDeptName');
+                        var selectedDeptRemark = $('#selectedDeptRemark');
+                        var selectedDeptManagers = $('#selectedDeptManagers');
+                        if (clickFlag === 0) {
+                            // cancel select.
+                            selectedDeptId.val('');
+                            selectedDeptName.val('');
+                            selectedDeptRemark.text('');
+                            selectedDeptManagers.empty();
+                            return false;
+                        }
+                        selectedDeptId.val(treeNode.id);
+                        selectedDeptName.val(treeNode.name);
+                        selectedDeptRemark.text(treeNode.deptRemark);
+                        self._getDeptManagers(treeNode.id, selectedDeptManagers);
+
+                        return true;
+                    }
+                }
+            });
+        },
+        /**
+         * 设置树的各个按钮的动作事件
+         * @private
+         */
+        _initButtonEvt: function() {
+            var addDeptBtn = $('#addDept');
+            var editDeptBtn = $('#editDept');
+            var deleteDeptBtn = $('#deleteDept');
+
+            addDeptBtn.click(function() {
+                var selectedNodes = $.poa.tree.getSelectedNode(self.deptTree);
+                var selectedNode;
+                if (selectedNodes && selectedNodes.length > 0) {
+                    selectedNode = selectedNodes[0];
+                    $.poa.modal.create({
+                        url: 'dept/addPage',
+                        data: {
+                            parentId: selectedNode.id,
+                            parentName: selectedNode.name
+                        }
+                    });
+                } else {
+                    $.poa.messageBox.alert($.poa.resource.DEPT_NO_SELECTION);
+                }
+            });
+            editDeptBtn.click(function() {
+                var selectedNodes = $.poa.tree.getSelectedNode(self.deptTree);
+                var selectedNode;
+                var parentNode;
+                var data;
+                if (selectedNodes && selectedNodes.length > 0) {
+                    selectedNode = selectedNodes[0];
+                    parentNode = $.poa.tree.getNodeByTId(self.deptTree, selectedNode.parentTId);
+                    data = {
+                        deptId: selectedNode.id,
+                        deptName: selectedNode.name,
+                        deptRemark: selectedNode.deptRemark
+                    };
+                    if (parentNode) {
+                        data.parentId = parentNode.id;
+                        data.parentName = parentNode.name;
+                    } else {
+                        data.parentId = 0;
+                        data.parentName = '';
+                    }
+                    $.poa.modal.create({
+                        url: 'dept/editPage',
+                        data: data
+                    });
+                } else {
+                    $.poa.messageBox.alert($.poa.resource.DEPT_NO_SELECTION);
+                }
+            });
+            deleteDeptBtn.click(function() {
+                var selectedNodes = $.poa.tree.getSelectedNode(self.deptTree);
+                var msg;
+                if (selectedNodes && selectedNodes.length > 0) {
+                    msg = $.poa.resource.DEPT_DELETE_CONFIRM + selectedNodes[0].name;
+                    $.poa.messageBox.confirm(msg, $.poa.resource.CONFIRM, {
+                        yes: function() {
+                            $.poa.ajax({
+                                url: 'dept/deleteDept',
+                                type: 'post',
+                                dataType: 'json',
+                                data: {
+                                    deptId: selectedNodes[0].id
+                                },
+                                success: function() {
+                                    var parentNode = $.poa.tree.getNodeByTId(self.deptTree, selectedNodes[0].parentTId);
+                                    $.poa.tree.refreshNode(self.deptTree, parentNode);
+                                    self._clearDetail();
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    $.poa.messageBox.alert($.poa.resource.DEPT_NO_SELECTION);
+                }
+            });
+        },
+        // ------------------------------------- 组织管理页面 结束-------------------------------------------------
+
+        // ------------------------------------- 组织添加/编辑Modal 开始-------------------------------------------------
         /**
          * 组织添加/编辑的Modal对话框的初始化，以及各个控件的事件定义
          */
@@ -107,7 +231,7 @@ $(function() {
                             }
 
                             $.poa.modal.destroy({
-                                selector: '#userModal'
+                                selector: '#userSelectModal'
                             });
                         });
                     }
@@ -140,46 +264,6 @@ $(function() {
             return userList;
         },
         /**
-         * 组织树的初始化
-         * @private
-         */
-        _initTree: function() {
-            self.deptTree = $.poa.tree.create({
-                selector: '#deptTree',
-                url: 'dept/subDept',
-                checkEnabled: false,
-                editEnabled: false,
-                selectedMulti: false,
-                callback: {
-                    onNodeCreated: function(event, treeId, treeNode) {
-                        if (treeNode.id === 1) {
-                            self.deptTree.expandNode(treeNode, true, false, true, true);
-                        }
-                    },
-                    beforeClick: function(treeId, treeNode, clickFlag) {
-                        var selectedDeptId = $('#selectedDeptId');
-                        var selectedDeptName = $('#selectedDeptName');
-                        var selectedDeptRemark = $('#selectedDeptRemark');
-                        var selectedDeptManagers = $('#selectedDeptManagers');
-                        if (clickFlag === 0) {
-                            // cancel select.
-                            selectedDeptId.val('');
-                            selectedDeptName.val('');
-                            selectedDeptRemark.text('');
-                            selectedDeptManagers.empty();
-                            return false;
-                        }
-                        selectedDeptId.val(treeNode.id);
-                        selectedDeptName.val(treeNode.name);
-                        selectedDeptRemark.text(treeNode.deptRemark);
-                        self._getDeptManagers(treeNode.id, selectedDeptManagers);
-
-                        return true;
-                    }
-                }
-            });
-        },
-        /**
          * 从DB中获取组织的管理者，设置到页面的List组件中
          * @param deptId 组织ID
          * @param selectedDeptManagers 页面显示管理者的List组件对象
@@ -208,92 +292,19 @@ $(function() {
                 }
             });
         },
-        /**
-         * 设置树的各个按钮的动作事件
-         * @private
-         */
-        _initButtonEvt: function() {
-            var addDeptBtn = $('#addDept');
-            var editDeptBtn = $('#editDept');
-            var deleteDeptBtn = $('#deleteDept');
-
-            addDeptBtn.click(function() {
-                var selectedNodes = $.poa.tree.getSelectedNode(self.deptTree);
-                var selectedNode;
-                if (selectedNodes && selectedNodes.length > 0) {
-                    selectedNode = selectedNodes[0];
-                    $.poa.modal.create({
-                        url: 'dept/addPage',
-                        data: {
-                            parentId: selectedNode.id,
-                            parentName: selectedNode.name
-                        }
-                    });
-                } else {
-                    $.poa.messageBox.alert($.poa.resource.DEPT_NO_SELECTION);
-                }
-            });
-            editDeptBtn.click(function() {
-                var selectedNodes = $.poa.tree.getSelectedNode(self.deptTree);
-                var selectedNode;
-                var parentNode;
-                var data;
-                if (selectedNodes && selectedNodes.length > 0) {
-                    selectedNode = selectedNodes[0];
-                    parentNode = $.poa.tree.getNodeByTId(self.deptTree, selectedNode.parentTId);
-                    data = {
-                        deptId: selectedNode.id,
-                        deptName: selectedNode.name,
-                        deptRemark: selectedNode.deptRemark
-                    };
-                    if (parentNode) {
-                        data.parentId = parentNode.id;
-                        data.parentName = parentNode.name;
-                    } else {
-                        data.parentId = 0;
-                        data.parentName = '';
-                    }
-                    $.poa.modal.create({
-                        url: 'dept/editPage',
-                        data: data
-                    });
-                } else {
-                    $.poa.messageBox.alert($.poa.resource.DEPT_NO_SELECTION);
-                }
-            });
-            deleteDeptBtn.click(function() {
-                var selectedNodes = $.poa.tree.getSelectedNode(self.deptTree);
-                var msg;
-                if (selectedNodes && selectedNodes.length > 0) {
-                    msg = $.poa.resource.DEPT_DELETE_CONFIRM + selectedNodes[0].name;
-                    $.poa.messageBox.confirm(msg, $.poa.resource.CONFIRM, {
-                        yes: function() {
-                            $.poa.ajax({
-                                url: 'dept/deleteDept',
-                                type: 'post',
-                                dataType: 'json',
-                                data: {
-                                    deptId: selectedNodes[0].id
-                                },
-                                success: function() {
-                                    var parentNode = $.poa.tree.getNodeByTId(self.deptTree, selectedNodes[0].parentTId);
-                                    $.poa.tree.refreshNode(self.deptTree, parentNode);
-                                    self._clearDetail();
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    $.poa.messageBox.alert($.poa.resource.DEPT_NO_SELECTION);
-                }
-            });
-        },
         _clearDetail: function() {
             $('#selectedDeptId').val('');
             $('#selectedDeptName').val('');
             $('#selectedDeptRemark').val('');
             $('#selectedDeptManagers').empty();
+        },
+        // ------------------------------------- 组织添加/编辑Modal 结束-------------------------------------------------
+
+        // ------------------------------------- 组织选择Modal 开始-------------------------------------------------
+        initDeptSelectModal: function() {
+
         }
+        // ------------------------------------- 组织选择Modal 结束-------------------------------------------------
     };
     self = $.poa.dept;
 });

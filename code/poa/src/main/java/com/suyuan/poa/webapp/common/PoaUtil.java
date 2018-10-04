@@ -1,5 +1,6 @@
 package com.suyuan.poa.webapp.common;
 
+import org.slf4j.Logger;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -60,6 +61,14 @@ public final class PoaUtil {
                 .contentLength(file.length())
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(new FileSystemResource(file));
+    }
+
+    public static void logEntry(Logger log, MessageService msgService, String... args) {
+
+    }
+
+    public static void logExit(Logger log, MessageService msgService, String... args) {
+
     }
 
     /**

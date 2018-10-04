@@ -5,6 +5,8 @@ import com.suyuan.poa.webapp.code.bean.CodeTypeBean;
 import com.suyuan.poa.webapp.common.CommonDao;
 import com.suyuan.poa.webapp.common.DBConstant;
 import com.suyuan.poa.webapp.common.SearchParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
@@ -18,6 +20,7 @@ import java.util.List;
  */
 @Component
 public class CodeDao extends CommonDao<CodeBean> {
+
     /**
      * {@inheritDoc}
      */
@@ -55,6 +58,7 @@ public class CodeDao extends CommonDao<CodeBean> {
      */
     public int add(CodeBean bean) {
         String sql = "INSERT INTO CODE (`CODE_TYPE_ID`,`CODE_TYPE_NAME`,`CODE_NAME`, `ACTIVE`) VALUES (?,?,?,true)";
+
         jdbcTemplate.update(sql, bean.getCodeTypeId(), bean.getCodeTypeName(), bean.getCodeName());
         return getLastInsertId();
     }
@@ -80,16 +84,9 @@ public class CodeDao extends CommonDao<CodeBean> {
     public List<CodeBean> search(SearchParam param, int codeTypeId, String codeNameLike) {
         List<Object> argList = new ArrayList<>();
         StringBuilder sbSQL = new StringBuilder();
-        sbSQL.append("SELECT `");
-        sbSQL.append(DBConstant.CODE_ID).append("`,`");
-        sbSQL.append(DBConstant.CODE_NAME).append("`,`");
-        sbSQL.append(DBConstant.CODE_TYPE_ID).append("`,`");
-        sbSQL.append(DBConstant.CODE_TYPE_NAME).append("` FROM `");
-        sbSQL.append(DBConstant.CODE_TABLE).append("`");
-        sbSQL.append(" WHERE ACTIVE=true ");
+        String sql = "SELECT `CODE_ID`,`CODE_NAME`,`CODE_TYPE_ID`,`CODE_TYPE_NAME` FROM `CODE` WHERE `ACTIVE`=true";
         String sqlWhere = getWhereClause(codeTypeId, codeNameLike, argList);
-        sbSQL.append(sqlWhere);
-
+        sbSQL.append(sql).append(sqlWhere);
         sbSQL.append(param.toSQL());
 
         return jdbcTemplate.query(sbSQL.toString(),
@@ -102,7 +99,7 @@ public class CodeDao extends CommonDao<CodeBean> {
         List<Object> argList = new ArrayList<>();
 
         StringBuilder sbSQL = new StringBuilder();
-        sbSQL.append("SELECT COUNT(1) AS TOTAL FROM ").append(DBConstant.CODE_TABLE);
+        sbSQL.append("SELECT COUNT(1) AS TOTAL FROM `CODE`");
         String sqlWhere = getWhereClause(codeTypeId, codeNameLike, argList);
         sbSQL.append(" WHERE ACTIVE=true ").append(sqlWhere);
 
@@ -118,11 +115,11 @@ public class CodeDao extends CommonDao<CodeBean> {
     private String getWhereClause(int codeTypeId, String codeNameLike, List<Object> argList) {
         StringBuilder sbWhereSQL = new StringBuilder();
         if (codeTypeId > 0) {
-            sbWhereSQL.append(" AND `").append(DBConstant.CODE_TYPE_ID).append("`=?");
+            sbWhereSQL.append(" AND `CODE_TYPE_ID`=?");
             argList.add(codeTypeId);
         }
         if (!StringUtils.isEmpty(codeNameLike)) {
-            sbWhereSQL.append(" AND `").append(DBConstant.CODE_NAME).append("` Like ?");
+            sbWhereSQL.append(" AND `CODE_NAME` Like ?");
             argList.add("%" + codeNameLike + "%");
         }
         return sbWhereSQL.toString();
@@ -133,13 +130,8 @@ public class CodeDao extends CommonDao<CodeBean> {
      * @return 模块类型信息
      */
     public List<CodeTypeBean> getAllCodeType() {
-        StringBuilder sbSQL = new StringBuilder();
-        sbSQL.append("SELECT DISTINCT `");
-        sbSQL.append(DBConstant.CODE_TYPE_ID).append("`,`");
-        sbSQL.append(DBConstant.CODE_TYPE_NAME).append("` FROM `");
-        sbSQL.append(DBConstant.CODE_TABLE).append("`");
-
-        return jdbcTemplate.query(sbSQL.toString(), rs -> {
+        String sql = "SELECT DISTINCT `CODE_TYPE_ID`,`CODE_TYPE_NAME` FROM `CODE` WHERE `ACTIVE`=true";
+        return jdbcTemplate.query(sql, rs -> {
             List<CodeTypeBean> typeBeanList = new ArrayList<>();
             while (rs.next()) {
                 CodeTypeBean typeBean = new CodeTypeBean();
@@ -157,41 +149,29 @@ public class CodeDao extends CommonDao<CodeBean> {
      * @return 更新件数
      */
     public int deleteCode(int codeId) {
-        String sql = "UPDATE " + DBConstant.CODE_TABLE + " SET "
-                + DBConstant.IS_ACTIVE + "=false WHERE "
-                + DBConstant.CODE_ID + "=?";
+        String sql = "UPDATE `CODE` SET `ACTIVE`=false WHERE `CODE_ID`=?";
         return jdbcTemplate.update(sql, codeId);
     }
 
     public synchronized int getNextCodeTypeId() {
-        String sql = "SELECT MAX(`"+ DBConstant.CODE_TYPE_ID + "`) + 1 AS NXT FROM "
-                + DBConstant.CODE_TABLE;
+        String sql = "SELECT MAX(`CODE_TYPE_ID`) + 1 AS NXT FROM `CODE`";
         return jdbcTemplate.query(sql, rs -> {
             int maxId = 0;
             while (rs.next()) {
                 maxId = rs.getInt("NXT");
             }
-            return maxId;
+            return maxId == 0 ? 1 : maxId;
         });
     }
 
     public int saveCode(CodeBean code) {
-        StringBuilder sbSQL = new StringBuilder();
-        sbSQL.append("UPDATE ").append(DBConstant.CODE_TABLE);
-        sbSQL.append(" SET ").append(DBConstant.CODE_NAME).append("=? WHERE ");
-        sbSQL.append(DBConstant.CODE_ID).append("=?");
-        return jdbcTemplate.update(sbSQL.toString(), code.getCodeName(), code.getCodeId());
+        String sql = "UPDATE `CODE` SET `CODE_NAME`=? WHERE `CODE_ID`=?";
+        return jdbcTemplate.update(sql, code.getCodeName(), code.getCodeId());
     }
 
     public int createDao(CodeBean code) {
-        StringBuilder sbSQL = new StringBuilder();
-        sbSQL.append("INSERT INTO ").append(DBConstant.CODE_TABLE).append("(")
-                .append(DBConstant.CODE_TYPE_ID).append(",")
-                .append(DBConstant.CODE_TYPE_NAME).append(",")
-                .append(DBConstant.CODE_NAME).append(",")
-                .append(DBConstant.IS_ACTIVE)
-                .append(") VALUES(?,?,?,?)");
-        return jdbcTemplate.update(sbSQL.toString(), code.getCodeTypeId(),
+        String sql = "INSERT INTO `CODE` (`CODE_TYPE_ID`,`CODE_TYPE_NAME`,`CODE_NAME`,`ACTIVE`)VALUES(?,?,?,?)";
+        return jdbcTemplate.update(sql, code.getCodeTypeId(),
                 code.getCodeTypeName(), code.getCodeName(), true);
     }
 }

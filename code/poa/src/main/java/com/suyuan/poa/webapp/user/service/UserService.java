@@ -56,7 +56,7 @@ public class UserService extends PoaUserService {
      * @return 更新件数
      */
     @Transactional
-    public int updateUser(UserBean user) {
+    public int editUser(UserBean user) {
         return userDao.updateUser(user);
     }
 }

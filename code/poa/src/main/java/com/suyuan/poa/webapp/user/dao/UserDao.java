@@ -102,27 +102,26 @@ public class UserDao extends CommonDao<UserBean> {
      * @return 符合条件人员
      */
     public List<UserBean> searchUser(SearchParam param, String policeNoLike, String nameLike) {
-        // SELECT USER_ID,USER_NAME,POLICE_NUMBER,PHONE_NUMBER,USER_ROLE,USER_PASSWORD FROM USER WHERE POLICE_NUMBER LIKE ? AND USER_NAME LIKE ?
-
         // parameter
         List<String> argList = new ArrayList<>();
         // sql文
-        StringBuilder sbSQL = new StringBuilder();
-        sbSQL.append("SELECT ").append(DBConstant.USER_ID).append(",");
-        sbSQL.append(DBConstant.USER_NAME).append(",");
-        sbSQL.append(DBConstant.POLICE_NUMBER).append(",");
-        sbSQL.append(DBConstant.PHONE_NUMBER).append(",");
-        sbSQL.append(DBConstant.USER_ROLE).append(",");
-        sbSQL.append(DBConstant.PASSWORD).append(" FROM ");
-        sbSQL.append(DBConstant.USER_TABLE);
+        String sql = "SELECT U.`USER_ID`,U.`USER_NAME`,U.`POLICE_NUMBER`,U.`PHONE_NUMBER`,U.`USER_ROLE`,U.`USER_PASSWORD`,U.`DEPT_ID`,D.`DEPT_NAME` FROM `USER` U, `DEPT` D";
 
         String sqlWhere = getWhereForSearch(policeNoLike, nameLike, argList);
         if (sqlWhere.length() > 0) {
-            sbSQL.append(" WHERE ").append(sqlWhere);
+            sql = sql + " WHERE " + sqlWhere;
         }
-        sbSQL.append(param.toSQL());
+        sql += " AND U.`DEPT_ID`=D.`DEPT_ID`";
+        sql += param.toSQL();
 
-        return jdbcTemplate.query(sbSQL.toString(), argList.toArray(new String[0]), getAllExtractor());
+        return jdbcTemplate.query(sql, argList.toArray(new String[0]), rs -> {
+            List<UserBean> beanList = new ArrayList<>();
+            while(rs.next()) {
+                UserBean bean = convertBeanWithDept(rs);
+                beanList.add(bean);
+            }
+            return beanList;
+        });
     }
 
     /**
@@ -134,15 +133,13 @@ public class UserDao extends CommonDao<UserBean> {
     public int count(String policeNoLike, String nameLike) {
         // parameter
         List<String> argList = new ArrayList<>();
-
-        StringBuilder sbSQL = new StringBuilder();
-        sbSQL.append("SELECT COUNT(1) AS TOTAL FROM ").append(DBConstant.USER_TABLE);
+        String sql = "SELECT COUNT(1) AS TOTAL FROM `USER`";
         String sqlWhere = getWhereForSearch(policeNoLike, nameLike, argList);
         if (sqlWhere.length() > 0) {
-            sbSQL.append(" WHERE ").append(sqlWhere);
+            sql = sql + " WHERE " + sqlWhere;
         }
 
-        return jdbcTemplate.query(sbSQL.toString(), argList.toArray(new String[0]), rs -> {
+        return jdbcTemplate.query(sql, argList.toArray(new String[0]), rs -> {
             int total = 0;
             while(rs.next()) {
                 total = rs.getInt("TOTAL");
@@ -157,12 +154,9 @@ public class UserDao extends CommonDao<UserBean> {
      * @return 删除件数
      */
     public int deleteUser(int userId) {
-        StringBuilder sbSQL = new StringBuilder();
-        sbSQL.append("UPDATE ").append(DBConstant.USER_TABLE);
-        sbSQL.append(" SET ").append(DBConstant.IS_ACTIVE).append("=false");
-        sbSQL.append(" WHERE ").append(DBConstant.USER_ID).append("=?");
+        String sql = "UPDATE `USER` SET ACTIVE=false WHERE `USER_ID`=?";
 
-        return jdbcTemplate.update(sbSQL.toString(), userId);
+        return jdbcTemplate.update(sql, userId);
     }
 
     /**

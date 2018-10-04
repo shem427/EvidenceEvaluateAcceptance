@@ -141,6 +141,7 @@ $(function() {
                     otherTypeArea.hide();
                 }
             });
+            codeTypeSelect.trigger('change');
         },
         _initModalEvt: function() {
             $('#saveCode').click(function() {

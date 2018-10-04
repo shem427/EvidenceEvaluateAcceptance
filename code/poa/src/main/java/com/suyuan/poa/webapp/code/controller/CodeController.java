@@ -7,15 +7,14 @@ import com.suyuan.poa.webapp.common.CommonBean;
 import com.suyuan.poa.webapp.common.MessageService;
 import com.suyuan.poa.webapp.common.SearchParam;
 import com.suyuan.poa.webapp.common.TableData;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
-import javax.jws.Oneway;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +25,14 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/code")
 public class CodeController {
-    private static final Log LOG = LogFactory.getLog(CodeController.class);
+    /**
+     * LOG
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(CodeController.class);
+
     @Autowired
     private CodeService codeService;
+
     @Autowired
     private MessageService messageService;
     /**
@@ -63,6 +67,8 @@ public class CodeController {
     @GetMapping(value = "/codeList")
     @ResponseBody
     public TableData<CodeBean> searchCode(SearchParam searchParam, String codeTypeId, String codeNameLike) {
+        LOG.debug(messageService.getLogEntry("poa.code.search"));
+
         TableData<CodeBean> tableData = null;
         int typeId = -1;
         try {
@@ -72,49 +78,63 @@ public class CodeController {
             tableData = codeService.searchCode(searchParam, typeId, codeNameLike);
         } catch (Exception e) {
             tableData = new TableData<CodeBean>();
-            String message = messageService.getMessage("poa.search.code.error");
+            String message = messageService.getMessage("poa.server.error");
             LOG.error(message, e);
             tableData.setStatus(CommonBean.Status.ERROR);
             tableData.setMessage(message);
         }
 
+        LOG.debug(messageService.getLogExit("poa.code.search"));
         return tableData;
     }
 
     @GetMapping(value = "/getAllTypes")
     @ResponseBody
     public List<CodeTypeBean> getAllTypes() {
-        return codeService.getAllTypes();
+        LOG.debug(messageService.getLogEntry("poa.code.getAllType"));
+
+        List<CodeTypeBean> typeList = codeService.getAllTypes();
+
+        LOG.debug(messageService.getLogExit("poa.code.getAllType"));
+
+        return typeList;
     }
 
     @PostMapping(value = "/delete")
     @ResponseBody
     public CommonBean deleteCode(@RequestBody List<Integer> codeIdList) {
+        LOG.debug(messageService.getLogEntry("poa.code.delete"));
+
         CommonBean bean = new CommonBean();
         try {
             codeService.deleteCode(codeIdList);
         } catch (Exception e) {
-            String message = messageService.getMessage("poa.delete.code.error");
+            String message = messageService.getMessage("poa.server.error");
             LOG.error(message, e);
             bean.setStatus(CommonBean.Status.ERROR);
             bean.setMessage(message);
         }
 
+        LOG.debug(messageService.getLogExit("poa.code.delete"));
         return bean;
     }
 
     @PostMapping(value = "/save")
     @ResponseBody
     public CommonBean saveCode(CodeBean codeBean) {
+        LOG.debug(messageService.getLogEntry("poa.code.save"));
+
         CommonBean bean = new CommonBean();
         try {
             codeService.saveCode(codeBean);
         } catch (Exception e) {
-            String message = messageService.getMessage("poa.save.code.error");
+            String message = messageService.getMessage("poa.server.error");
             LOG.error(message, e);
             bean.setStatus(CommonBean.Status.ERROR);
             bean.setMessage(message);
         }
+
+        LOG.debug(messageService.getLogExit("poa.code.save"));
         return bean;
     }
 }

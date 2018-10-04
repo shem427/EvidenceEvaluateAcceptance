@@ -5,6 +5,8 @@ import com.suyuan.poa.webapp.common.MessageService;
 import com.suyuan.poa.webapp.setting.bean.ChangePassword;
 import com.suyuan.poa.webapp.setting.service.SettingService;
 import com.suyuan.poa.webapp.user.bean.UserBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -22,6 +24,11 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/setting")
 public class SettingController {
+    /**
+     * LOG
+     */
+    private static Logger LOG = LoggerFactory.getLogger(SettingController.class);
+
     @Autowired
     private SettingService settingService;
 
@@ -47,6 +54,8 @@ public class SettingController {
     @PostMapping(value = "/changePassword")
     @ResponseBody
     public CommonBean changePassword(ChangePassword cpBean) {
+        LOG.debug(messageService.getLogEntry("poa.setting.changePassword"));
+
         CommonBean bean = new CommonBean();
 
         SecurityContext ctx = SecurityContextHolder.getContext();
@@ -62,15 +71,19 @@ public class SettingController {
         }
         settingService.changePassword(policeNo, cpBean.getNewPassword());
 
+        LOG.debug(messageService.getLogExit("poa.setting.changePassword"));
         return bean;
     }
 
     @PostMapping(value = "/updateProfile")
     @ResponseBody
     public CommonBean updateProfile(UserBean profile) {
+        LOG.debug(messageService.getLogEntry("poa.setting.updateProfile"));
+
         CommonBean bean = new CommonBean();
         // TODO:
 
+        LOG.debug(messageService.getLogExit("poa.setting.updateProfile"));
         return bean;
     }
 }

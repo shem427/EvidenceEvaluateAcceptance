@@ -1,9 +1,10 @@
 $(function() {
     var self;
     $.poa.user = {
+        // ------------------------------------- 人员管理页面 开始-------------------------------------------------
         init: function() {
             self._initUserTable();
-            self._initButtonEvt('#usersTable');
+            self._initSearchEvt('#usersTable');
             self._initLinkEvt();
         },
         _initUserTable: function() {
@@ -36,6 +37,16 @@ $(function() {
                 }
             });
         },
+        _initSearchEvt: function(tableSelector) {
+            $('#userSearch').click(function() {
+                $.poa.table.refresh({
+                    selector: tableSelector,
+                    params: {
+                        silent: true
+                    }
+                });
+            });
+        },
         _initLinkEvt: function() {
             // 导入文件
             var importFileLink = $('#importFileLink');
@@ -45,22 +56,74 @@ $(function() {
             var exportCurrentPageLink = $('#exportCurrentPageLink');
             // 导出选择
             var exportSelectionLink = $('#exportSelectionLink');
+            // 添加
+            var addUser = $('#addUser');
+            // 编辑
+            var editUser = $('#editUser');
+            // 删除
+            var deleteUser = $('#deleteUser');
 
-
-        },
-        initModalUsers: function() {
-            self._initModalUserTable();
-            self._initButtonEvt('#modalUsersTable');
-        },
-        _initButtonEvt: function(tableSelector) {
-            $('#userSearch').click(function() {
-                $.poa.table.refresh({
-                    selector: tableSelector,
-                    params: {
-                        silent: true
+            addUser.click(function() {
+                $.poa.modal.create({
+                    url: 'user/addPage'
+                });
+            });
+            editUser.click(function() {
+                var selections = $.poa.table.getSelections('#usersTable');
+                var selected;
+                if (selections.length === 0) {
+                    $.poa.messageBox.alert($.poa.resource.USER_NO_SELETION);
+                    return;
+                } else if (selections.length !== 1) {
+                    $.poa.messageBox.alert($.poa.resource.USER_EDIT_MULTI_SELECT);
+                    return;
+                }
+                selected = selections[0];
+                $.poa.modal.create({
+                    url: 'user/editPage',
+                    data: {
+                        userId: selected.userId,
+                        policeNumber: selected.policeNumber,
+                        phoneNumber: selected.phoneNumber,
+                        name: selected.name,
+                        deptId: selected.deptId,
+                        deptName: selected.deptName
                     }
                 });
             });
+            deleteUser.click(function() {
+                var selections = $.poa.table.getSelections('#usersTable');
+                var userIdList = [];
+                $.each(selections, function(indx, item) {
+                    userIdList.push(item.userId);
+                });
+                if (userIdList.length === 0) {
+                    $.poa.messageBox.alert($.poa.resource.USER_NO_SELETION);
+                    return;
+                }
+                $.poa.messageBox.confirm($.poa.resource.USER_DELETE_CONFIRM + userIdList.length, '', {
+                    yes: function() {
+                        $.poa.ajax({
+                            url: 'user/delete',
+                            type: 'post',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify(userIdList),
+                            success: function() {
+                                $('#userSearch').trigger('click');
+                                $.poa.messageBox.info($.poa.resource.USER_DELETE_SUCCESS);
+                            }
+                        });
+                    }
+                });
+            });
+        },
+        // ------------------------------------- 人员管理页面 结束-------------------------------------------------
+
+        // ------------------------------------- 人员选择Modal 开始-----------------------------------------------
+        initModalUsers: function() {
+            self._initModalUserTable();
+            self._initSearchEvt('#modalUsersTable');
         },
         _initModalUserTable: function() {
             $.poa.table.create({
@@ -155,7 +218,30 @@ $(function() {
                 selectedUserIds.push(userOption.val());
             }
             return selectedUserIds;
+        },
+        // ------------------------------------- 人员选择Modal 结束-----------------------------------------------
+
+        // ------------------------------------- 人员添加/编辑Modal 开始-------------------------------------------
+        initModal: function() {
+            $('#selectDept').click(function() {
+
+            });
+            $('#saveUser').click(function() {
+                $.poa.ajax({
+                    url: 'user/save',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        userId: $('#userId').val(),
+                        policeNumber: $('#policeNumber').val(),
+                        phoneNumber: $('#phoneNumber').val(),
+                        name: $('#userName').val(),
+                        deptId: $('#deptId').val()
+                    }
+                });
+            });
         }
+        // ------------------------------------- 人员添加/编辑Modal 结束-------------------------------------------
     };
     self = $.poa.user;
 });

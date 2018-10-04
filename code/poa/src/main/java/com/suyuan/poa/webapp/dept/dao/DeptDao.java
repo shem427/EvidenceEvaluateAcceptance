@@ -50,22 +50,13 @@ public class DeptDao extends CommonDao<DeptBean> {
      * @return 下位组织信息
      */
     public List<DeptBean> getDeptByParentId(int pId) {
-        StringBuilder sbSQL = new StringBuilder();
-        sbSQL.append("SELECT ");
-        sbSQL.append("D.").append(DBConstant.DEPT_ID).append(",");
-        sbSQL.append("D.").append(DBConstant.DEPT_NAME).append(",");
-        sbSQL.append("D.").append(DBConstant.DEPT_REMARK).append(",");
-        sbSQL.append("D.").append(DBConstant.DEPT_PARENT_ID);
-        sbSQL.append(" FROM ");
-        sbSQL.append(DBConstant.DEPT_TABLE).append(" D");
-        sbSQL.append(" WHERE ");
+        String sql = "SELECT D.`DEPT_ID`,D.`DEPT_NAME`,D.`DEPT_REMARK`,D.`PARENT_ID` FROM `DEPT` D WHERE ";
         if (pId <= 0) {
-            sbSQL.append("D.").append(DBConstant.DEPT_PARENT_ID).append("=? OR ");
-            sbSQL.append("D.").append(DBConstant.DEPT_PARENT_ID).append(" IS NULL");
+            sql += "D.`PARENT_ID`=? OR D.`PARENT_ID` IS NULL";
         } else {
-            sbSQL.append("D.").append(DBConstant.DEPT_PARENT_ID).append("=?");
+            sql += "D.`PARENT_ID`=?";
         }
-        List<DeptBean> subList = jdbcTemplate.query(sbSQL.toString(), new Integer[] {pId},
+        List<DeptBean> subList = jdbcTemplate.query(sql, new Integer[] {pId},
                 rs -> {
                     List<DeptBean> list = new ArrayList<>();
                     while(rs.next()) {

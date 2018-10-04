@@ -161,7 +161,7 @@ $(function() {
                 }
                 dialog.modal({
                     keyboard: false,
-                    backdrop: false
+                    backdrop: 'static'
                 });
                 dialog.on('hidden.bs.modal', function() {
                     dialog.empty().remove();

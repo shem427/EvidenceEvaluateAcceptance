@@ -6,7 +6,6 @@ package com.suyuan.poa.webapp.common;
 public class DBConstant {
     private DBConstant() {
     }
-
     // COMMON
     public static final String IS_ACTIVE = "ACTIVE";
     // USER TABLE
