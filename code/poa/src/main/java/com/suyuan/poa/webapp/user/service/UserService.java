@@ -42,12 +42,16 @@ public class UserService extends PoaUserService {
 
     /**
      * 删除人员（逻辑删除）。
-     * @param userId 人员ID
+     * @param userIdList 人员ID
      * @return 删除件数
      */
     @Transactional
-    public int deleteUser(int userId) {
-        return userDao.deleteUser(userId);
+    public int deleteUser(List<Integer> userIdList) {
+        int count = 0;
+        for (int userId : userIdList) {
+            count += userDao.deleteUser(userId);
+        }
+        return count;
     }
 
     /**

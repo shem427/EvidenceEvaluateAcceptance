@@ -86,6 +86,7 @@ $(function() {
                         policeNumber: selected.policeNumber,
                         phoneNumber: selected.phoneNumber,
                         name: selected.name,
+                        roles: selected.userRoles,
                         deptId: selected.deptId,
                         deptName: selected.deptName
                     }
@@ -223,20 +224,61 @@ $(function() {
 
         // ------------------------------------- 人员添加/编辑Modal 开始-------------------------------------------
         initModal: function() {
+            // 选择组织
             $('#selectDept').click(function() {
+                // 弹出用户选择对话框
+                $.poa.modal.create({
+                    url: 'dept/modalDepts',
+                    afterDisplaying: function(dialog) {
+                        // 选择按钮
+                        var btnSelectDept = $('#btnSelectDept', dialog);
+                        // 组织树
+                        var deptModalTree = $.fn.zTree.getZTreeObj('deptModalTree');
+                        // 设置保存按钮事件
+                        btnSelectDept.unbind().click(function() {
+                            var deptIdModal = $('#deptIdModal');
+                            var deptNameModal = $('#deptNameModal');
+                            var nodes = $.poa.tree.getSelectedNode(deptModalTree);
+                            var node;
+                            if (nodes && nodes.length > 0) {
+                                node = nodes[0];
+                            } else {
+                                $.poa.messageBox.alert($.poa.resource.DEPT_NO_SELECTION);
+                                return;
+                            }
 
+                            deptIdModal.val(node.id);
+                            deptNameModal.val(node.name);
+                            $.poa.modal.destroy({
+                                selector: '#selectDeptModal'
+                            });
+                        });
+                    }
+                });
             });
+            //保存
             $('#saveUser').click(function() {
+                var userId = $('#userIdModal').val();
+                if (!userId) {
+                    userId = -1;
+                }
                 $.poa.ajax({
                     url: 'user/save',
                     type: 'post',
                     dataType: 'json',
                     data: {
-                        userId: $('#userId').val(),
-                        policeNumber: $('#policeNumber').val(),
-                        phoneNumber: $('#phoneNumber').val(),
-                        name: $('#userName').val(),
-                        deptId: $('#deptId').val()
+                        userId: userId,
+                        policeNumber: $('#policeNumberModal').val(),
+                        phoneNumber: $('#phoneNumberModal').val(),
+                        name: $('#userNameModal').val(),
+                        userRoles: $('#admin').is(':checked') ? 'ROLE_ADMIN' : '',
+                        deptId: $('#deptIdModal').val()
+                    },
+                    success: function() {
+                        $.poa.modal.destroy({
+                            selector: '#userModal'
+                        });
+                        $('#userSearch').trigger('click');
                     }
                 });
             });

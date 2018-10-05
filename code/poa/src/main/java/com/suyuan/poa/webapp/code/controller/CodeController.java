@@ -3,10 +3,7 @@ package com.suyuan.poa.webapp.code.controller;
 import com.suyuan.poa.webapp.code.bean.CodeBean;
 import com.suyuan.poa.webapp.code.bean.CodeTypeBean;
 import com.suyuan.poa.webapp.code.service.CodeService;
-import com.suyuan.poa.webapp.common.CommonBean;
-import com.suyuan.poa.webapp.common.MessageService;
-import com.suyuan.poa.webapp.common.SearchParam;
-import com.suyuan.poa.webapp.common.TableData;
+import com.suyuan.poa.webapp.common.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +75,7 @@ public class CodeController {
             tableData = codeService.searchCode(searchParam, typeId, codeNameLike);
         } catch (Exception e) {
             tableData = new TableData<CodeBean>();
-            String message = messageService.getMessage("poa.server.error");
+            String message = messageService.getMessage(PoaConstant.LOG_ERROR);
             LOG.error(message, e);
             tableData.setStatus(CommonBean.Status.ERROR);
             tableData.setMessage(message);
@@ -109,7 +106,7 @@ public class CodeController {
         try {
             codeService.deleteCode(codeIdList);
         } catch (Exception e) {
-            String message = messageService.getMessage("poa.server.error");
+            String message = messageService.getMessage(PoaConstant.LOG_ERROR);
             LOG.error(message, e);
             bean.setStatus(CommonBean.Status.ERROR);
             bean.setMessage(message);
@@ -128,7 +125,7 @@ public class CodeController {
         try {
             codeService.saveCode(codeBean);
         } catch (Exception e) {
-            String message = messageService.getMessage("poa.server.error");
+            String message = messageService.getMessage(PoaConstant.LOG_ERROR);
             LOG.error(message, e);
             bean.setStatus(CommonBean.Status.ERROR);
             bean.setMessage(message);

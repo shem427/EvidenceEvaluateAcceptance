@@ -15,29 +15,34 @@
             <div class="modal-body">
                 <form role="form">
                     <div class="form-group">
-                        <label for="policeNumber">警号</label>
-                        <input type="hidden" th:value="${userId}" id="userId" />
-                        <input type="text" class="form-control" id="policeNumber" th:value="${policeNumber}" placeholder="请输入警号" />
+                        <label for="policeNumberModal">警号</label>
+                        <input type="hidden" th:value="${userId}" id="userIdModal" />
+                        <input type="text" class="form-control" id="policeNumberModal" th:value="${policeNumber}" placeholder="请输入警号" />
                     </div>
                     <div class="form-group">
-                        <label for="userName">姓名</label>
-                        <input type="text" class="form-control" id="userName" th:value="${name}" placeholder="请输入姓名" />
+                        <label for="userNameModal">姓名</label>
+                        <input type="text" class="form-control" id="userNameModal" th:value="${name}" placeholder="请输入姓名" />
                     </div>
                     <div class="form-group">
-                        <label for="phone">电话</label>
-                        <input type="text" class="form-control" id="phone" th:value="${phoneNumber}" placeholder="请输入电话号码" />
+                        <label for="phoneNumberModal">电话</label>
+                        <input type="text" class="form-control" id="phoneNumberModal" th:value="${phoneNumber}" placeholder="请输入电话号码" />
                     </div>
                     <div class="form-group">
-                        <label for="dept">所属单位</label>
-                        <input type="hidden" th:value="${deptId}" />
+                        <label for="deptNameModal">所属单位</label>
+                        <input type="hidden" th:value="${deptId}" id="deptIdModal" />
                         <div class="input-group">
-                            <input type="text" class="form-control" id="dept" th:value="${deptName}" readonly="readonly" />
+                            <input type="text" class="form-control" id="deptNameModal" th:value="${deptName}" readonly="readonly" />
                             <span class="input-group-btn">
                                 <button class="btn btn-default btn-date" type="button" id="selectDept">
                                     <span class="fa fa-building"></span>
                                 </button>
                             </span>
                         </div>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="admin" th:checked="${userRoles == 'ROLE_ADMIN'}" />管理员
+                        </label>
                     </div>
                 </form>
             </div>
@@ -48,3 +53,8 @@
         </div>
     </div>
 </div>
+<script>
+    $(function() {
+        $.poa.user.initModal();
+    });
+</script>

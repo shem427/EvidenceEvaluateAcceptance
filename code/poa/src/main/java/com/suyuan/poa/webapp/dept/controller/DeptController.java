@@ -2,6 +2,7 @@ package com.suyuan.poa.webapp.dept.controller;
 
 import com.suyuan.poa.webapp.common.CommonBean;
 import com.suyuan.poa.webapp.common.MessageService;
+import com.suyuan.poa.webapp.common.PoaConstant;
 import com.suyuan.poa.webapp.dept.bean.DeptBean;
 import com.suyuan.poa.webapp.dept.service.DeptService;
 import com.suyuan.poa.webapp.user.bean.UserBean;
@@ -41,6 +42,15 @@ public class DeptController {
     @GetMapping(value = "/index")
     public String page() {
         return "dept/page";
+    }
+
+    /**
+     * 显示组织选择页面。
+     * @return 组织选择页面
+     */
+    @GetMapping(value = "/modalDepts")
+    public String modalDepts() {
+        return "dept/modalDeptsPage";
     }
 
     /**
@@ -127,7 +137,7 @@ public class DeptController {
                 deptService.add(dept);
             }
         } catch (Exception e) {
-            String message = messageService.getMessage("poa.server.error");
+            String message = messageService.getMessage(PoaConstant.LOG_ERROR);
             LOG.error(message, e);
             bean.setStatus(CommonBean.Status.ERROR);
             bean.setMessage(message);
@@ -159,7 +169,7 @@ public class DeptController {
                 deptService.delete(deptId);
             }
         } catch (Exception e) {
-            String message = messageService.getMessage("poa.server.error");
+            String message = messageService.getMessage(PoaConstant.LOG_ERROR);
             LOG.error(message, e);
             retBean.setStatus(CommonBean.Status.ERROR);
             retBean.setMessage(message);

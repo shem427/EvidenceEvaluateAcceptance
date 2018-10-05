@@ -1,19 +1,14 @@
 package com.suyuan.poa.webapp.user.controller;
 
-import com.suyuan.poa.webapp.common.CommonBean;
-import com.suyuan.poa.webapp.common.MessageService;
-import com.suyuan.poa.webapp.common.SearchParam;
-import com.suyuan.poa.webapp.common.TableData;
+import com.suyuan.poa.webapp.common.*;
 import com.suyuan.poa.webapp.user.bean.UserBean;
 import com.suyuan.poa.webapp.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -28,6 +23,9 @@ public class UserController {
      * LOG
      */
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
+    private Environment env;
 
     @Autowired
     private UserService userService;
@@ -61,7 +59,7 @@ public class UserController {
         try {
             tableData = userService.searchUser(param, policeNoLike, nameLike);
         } catch(Exception e) {
-            String message = messageService.getMessage("poa.server.error");
+            String message = messageService.getMessage(PoaConstant.LOG_ERROR);
             LOG.error(message, e);
             tableData.setStatus(CommonBean.Status.ERROR);
             tableData.setMessage(message);
@@ -86,6 +84,7 @@ public class UserController {
      * @param policeNumber 警号
      * @param name 人员名
      * @param phoneNumber 电话号码
+     * @param roles 人员权限
      * @param deptId 组织ID
      * @param deptName 组织名
      * @return 人员编辑模态框页面
@@ -95,6 +94,7 @@ public class UserController {
                                     String policeNumber,
                                     String name,
                                     String phoneNumber,
+                                    String roles,
                                     int deptId,
                                     String deptName) {
         Map<String, Object> model = new HashMap<>();
@@ -103,6 +103,7 @@ public class UserController {
         model.put("policeNumber", policeNumber);
         model.put("phoneNumber", phoneNumber);
         model.put("name", name);
+        model.put("userRoles", roles);
         model.put("deptId", deptId);
         model.put("deptName", deptName);
 
@@ -110,6 +111,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/save")
+    @ResponseBody
     public CommonBean saveUser(UserBean user) {
         LOG.debug(messageService.getLogEntry("poa.user.save"));
 
@@ -121,16 +123,36 @@ public class UserController {
                 userService.editUser(user);
             } else {
                 // add
+                user.setPassword(env.getProperty(PoaConstant.CONFIG_DEFAULT_PASSWORD));
                 userService.addUser(user);
             }
         } catch (Exception e) {
-            String message = messageService.getMessage("poa.server.error");
+            String message = messageService.getMessage(PoaConstant.LOG_ERROR);
             LOG.error(message, e);
             bean.setStatus(CommonBean.Status.ERROR);
             bean.setMessage(message);
         }
 
         LOG.debug(messageService.getLogExit("poa.user.save"));
+        return bean;
+    }
+
+    @PostMapping(value = "/delete")
+    @ResponseBody
+    public CommonBean deleteUser(@RequestBody List<Integer> userIdList) {
+        LOG.debug(messageService.getLogEntry("poa.user.delete"));
+
+        CommonBean bean = new CommonBean();
+        try {
+            userService.deleteUser(userIdList);
+        } catch (Exception e) {
+            String message = messageService.getMessage(PoaConstant.LOG_ERROR);
+            LOG.error(message, e);
+            bean.setStatus(CommonBean.Status.ERROR);
+            bean.setMessage(message);
+        }
+
+        LOG.debug(messageService.getLogExit("poa.user.delete"));
         return bean;
     }
 }

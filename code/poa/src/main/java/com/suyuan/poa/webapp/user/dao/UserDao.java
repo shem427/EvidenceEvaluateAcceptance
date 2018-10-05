@@ -205,7 +205,7 @@ public class UserDao extends CommonDao<UserBean> {
                 user.getPhoneNumber(),
                 user.getDeptId(),
                 user.getUserRoles(),
-                user.getPassword());
+                user.getUserId());
     }
 
     private String getWhereForSearch(String policeNoLike, String nameLike, List<String> argList) {
