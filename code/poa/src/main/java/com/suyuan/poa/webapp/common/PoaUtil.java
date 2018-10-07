@@ -1,10 +1,14 @@
 package com.suyuan.poa.webapp.common;
 
+import com.suyuan.poa.webapp.user.bean.UserBean;
 import org.slf4j.Logger;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.File;
 import java.security.MessageDigest;
@@ -63,12 +67,12 @@ public final class PoaUtil {
                 .body(new FileSystemResource(file));
     }
 
-    public static void logEntry(Logger log, MessageService msgService, String... args) {
+    public static UserBean getUserFromSecurity() {
+        SecurityContext ctx = SecurityContextHolder.getContext();
+        Authentication auth = ctx.getAuthentication();
+        UserBean user = (UserBean) auth.getPrincipal();
 
-    }
-
-    public static void logExit(Logger log, MessageService msgService, String... args) {
-
+        return user;
     }
 
     /**

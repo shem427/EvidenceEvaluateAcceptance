@@ -54,6 +54,12 @@ $(function() {
             }
         },
         messageBox: {
+            msgFormat: function(msg, args) {
+                return msg.replace(/\{(\d+)\}/g, function() {
+                    var val = args[arguments[1]];
+                    return (!val) ? arguments[0] : val;
+                });
+            },
             alert: function(message, title, callback) {
                 var newTitle = title || $.poa.resource.ALERT;
                 $.poa.messageBox._message("alert", message, newTitle, callback);

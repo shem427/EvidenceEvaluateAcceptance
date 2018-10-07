@@ -11,6 +11,8 @@ $(function() {
         YES: '是',
         NO: '否',
 
+        VALIDATION_NULL: '{0}不能为空',
+
         LOG_OUT_CONFIRM: '请确认是否注销？',
 
         DEPT_NO_SELECTION: '请选择组织节点。',
@@ -29,6 +31,11 @@ $(function() {
 
         NEW_PASSWORD_NOT_MATCH: '两次输入的新密码不一致，请重新输入',
         OLD_NEW_PASSWORD_SAME: '新密码与旧密码相同，请输入与旧密码不同的新密码',
-        CHANGE_PASSWORD_SUCCESS: '密码修改成功'
+        CHANGE_PASSWORD_SUCCESS: '密码修改成功',
+
+        UPDATE_PROFILE_SUCCESS: '账号信息更新成功',
+        UPDATE_PROFILE_NAME: '姓名',
+        UPDATE_PROFILE_POLICE_NUMBER: '警号',
+        UPDATE_PROFILE_PHONE_NUMBER: '电话号码'
     };
 });

@@ -2,6 +2,8 @@ package com.suyuan.poa.webapp.setting.controller;
 
 import com.suyuan.poa.webapp.common.CommonBean;
 import com.suyuan.poa.webapp.common.MessageService;
+import com.suyuan.poa.webapp.common.PoaConstant;
+import com.suyuan.poa.webapp.common.PoaUtil;
 import com.suyuan.poa.webapp.setting.bean.ChangePassword;
 import com.suyuan.poa.webapp.setting.service.SettingService;
 import com.suyuan.poa.webapp.user.bean.UserBean;
@@ -57,19 +59,23 @@ public class SettingController {
         LOG.debug(messageService.getLogEntry("poa.setting.changePassword"));
 
         CommonBean bean = new CommonBean();
-
-        SecurityContext ctx = SecurityContextHolder.getContext();
-        Authentication auth = ctx.getAuthentication();
-        UserBean user = (UserBean) auth.getPrincipal();
-
-        String policeNo = user.getPoliceNumber();
-        boolean valid = settingService.checkOldPassword(policeNo, cpBean.getOldPassword());
-        if (!valid) {
-            bean.setStatus(CommonBean.Status.WARNING);
-            bean.setMessage(messageService.getMessage("poa.change.password.invalid.old"));
-            return bean;
+        UserBean user = PoaUtil.getUserFromSecurity();
+        try {
+            String policeNo = user.getPoliceNumber();
+            boolean valid = settingService.checkOldPassword(policeNo, cpBean.getOldPassword());
+            if (!valid) {
+                bean.setStatus(CommonBean.Status.WARNING);
+                bean.setMessage(messageService.getMessage("poa.change.password.invalid.old"));
+                return bean;
+            }
+            String password = settingService.changePassword(policeNo, cpBean.getNewPassword());
+            user.setPassword(password);
+        } catch (Exception e) {
+            String message = messageService.getMessage(PoaConstant.LOG_ERROR);
+            LOG.error(message, e);
+            bean.setStatus(CommonBean.Status.ERROR);
+            bean.setMessage(message);
         }
-        settingService.changePassword(policeNo, cpBean.getNewPassword());
 
         LOG.debug(messageService.getLogExit("poa.setting.changePassword"));
         return bean;
@@ -81,7 +87,18 @@ public class SettingController {
         LOG.debug(messageService.getLogEntry("poa.setting.updateProfile"));
 
         CommonBean bean = new CommonBean();
-        // TODO:
+        try {
+            settingService.updateProfile(profile);
+            UserBean user = PoaUtil.getUserFromSecurity();
+            user.setName(profile.getName());
+            user.setPoliceNumber(profile.getPoliceNumber());
+            user.setPhoneNumber(profile.getPhoneNumber());
+        } catch (Exception e) {
+            String message = messageService.getMessage(PoaConstant.LOG_ERROR);
+            LOG.error(message, e);
+            bean.setStatus(CommonBean.Status.ERROR);
+            bean.setMessage(message);
+        }
 
         LOG.debug(messageService.getLogExit("poa.setting.updateProfile"));
         return bean;

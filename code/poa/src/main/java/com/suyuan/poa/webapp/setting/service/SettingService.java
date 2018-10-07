@@ -19,9 +19,11 @@ public class SettingService {
         return oldPassword.equals(old) || passwordEncoder.encode(oldPassword).equals(old);
     }
 
-    public int changePassword(String policeNo, String newPassword) {
+    public String changePassword(String policeNo, String newPassword) {
         String encryptPassword = passwordEncoder.encode(newPassword);
-        return settingDao.changePassword(policeNo, encryptPassword);
+        settingDao.changePassword(policeNo, encryptPassword);
+
+        return encryptPassword;
     }
 
     public int updateProfile(UserBean profile) {
