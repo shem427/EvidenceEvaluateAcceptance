@@ -25,7 +25,7 @@ public class PoaPasswordEncoder implements PasswordEncoder {
      */
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return encodedPassword.equals(rawPassword)
+        return encodedPassword.equals(rawPassword.toString())
                 || encodedPassword.equals(PoaUtil.hashEncode(rawPassword.toString()));
     }
 }

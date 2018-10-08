@@ -24,7 +24,7 @@ public class CodeService {
      * @return 检索结果
      */
     public TableData<CodeBean> searchCode(SearchParam searchParam, int codeTypeId, String codeNameLike) {
-        int total = codeDao.count(searchParam, codeTypeId, codeNameLike);
+        int total = codeDao.count(codeTypeId, codeNameLike);
         List<CodeBean> rows = codeDao.search(searchParam, codeTypeId, codeNameLike);
         TableData<CodeBean> tableData = new TableData<>();
         tableData.setTotal(total);

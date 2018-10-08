@@ -95,7 +95,7 @@ public abstract class CommonDao<T extends CommonBean> {
      * 新建之后，获取插入的ID值。
      * @return 插入的ID值
      */
-    public int getLastInsertId() {
+    protected int getLastInsertId() {
         return jdbcTemplate.query("SELECT LAST_INSERT_ID() AS ID", rs -> {
             int id = -1;
             while(rs.next()) {

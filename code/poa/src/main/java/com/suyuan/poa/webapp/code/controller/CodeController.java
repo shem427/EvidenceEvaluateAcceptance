@@ -27,9 +27,15 @@ public class CodeController {
      */
     private static final Logger LOG = LoggerFactory.getLogger(CodeController.class);
 
+    /**
+     * 模块管理Service
+     */
     @Autowired
     private CodeService codeService;
 
+    /**
+     * MessageResouce Service
+     */
     @Autowired
     private MessageService messageService;
     /**
@@ -66,7 +72,7 @@ public class CodeController {
     public TableData<CodeBean> searchCode(SearchParam searchParam, String codeTypeId, String codeNameLike) {
         LOG.debug(messageService.getLogEntry("poa.code.search"));
 
-        TableData<CodeBean> tableData = null;
+        TableData<CodeBean> tableData;
         int typeId = -1;
         try {
             if (!StringUtils.isEmpty(codeTypeId)) {
@@ -74,7 +80,7 @@ public class CodeController {
             }
             tableData = codeService.searchCode(searchParam, typeId, codeNameLike);
         } catch (Exception e) {
-            tableData = new TableData<CodeBean>();
+            tableData = new TableData<>();
             String message = messageService.getMessage(PoaConstant.LOG_ERROR);
             LOG.error(message, e);
             tableData.setStatus(CommonBean.Status.ERROR);

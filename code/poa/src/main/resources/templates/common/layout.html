@@ -21,6 +21,8 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <!-- Bootstrap Table CSS -->
     <link rel="stylesheet" th:href="@{/css/bootstrap-table.min.css}" />
+    <!-- Bootstrap Validator CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrapValidator.min.css}" />
     <!-- MetisMenu CSS -->
     <link rel="stylesheet" th:href="@{/css/metisMenu.min.css}" />
     <!-- Custom CSS -->
@@ -54,11 +56,12 @@
     <script th:src="@{/js/bootstrap-table.min.js}"></script>
     <script th:src="@{/js/bootstrap-table-zh-CN.min.js}"></script>
 
-    <!-- Validator JS -->
-    <script th:src="@{/js/validator.min.js}"></script>
+    <!-- Bootstrap Validator JS -->
+    <script th:src="@{/js/bootstrapValidator.min.js}"></script>
+    <!--<script th:src="@{/js/language/zh-CN.js}"></script>-->
 
     <script th:inline="javascript">
-        var contextPath = /*[[@{/}]]*/ 'test';
+        var contextPath = /*[[@{/}]]*/ 'poa';
     </script>
 
     <!-- common JS -->
@@ -83,7 +86,7 @@
         <ul class="nav navbar-right navbar-top-links">
             <li class="dropdown">
                 <a id="userNameLink" class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i><span sec:authentication="principal.name"></span><b class="caret"></b>
+                    <i class="fa fa-user fa-fw"></i><span id="secUserName" sec:authentication="principal.name"></span><b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li><a id="updateProfileLink" href="#"><i class="fa fa-user fa-fw"></i>我的账号</a>

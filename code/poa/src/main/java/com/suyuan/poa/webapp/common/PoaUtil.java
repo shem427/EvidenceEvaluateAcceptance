@@ -1,7 +1,6 @@
 package com.suyuan.poa.webapp.common;
 
 import com.suyuan.poa.webapp.user.bean.UserBean;
-import org.slf4j.Logger;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -67,6 +66,10 @@ public final class PoaUtil {
                 .body(new FileSystemResource(file));
     }
 
+    /**
+     * 从spring-security上下文中获取当前用户信息。
+     * @return 当前用户信息
+     */
     public static UserBean getUserFromSecurity() {
         SecurityContext ctx = SecurityContextHolder.getContext();
         Authentication auth = ctx.getAuthentication();

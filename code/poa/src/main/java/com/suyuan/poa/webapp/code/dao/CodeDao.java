@@ -5,8 +5,6 @@ import com.suyuan.poa.webapp.code.bean.CodeTypeBean;
 import com.suyuan.poa.webapp.common.CommonDao;
 import com.suyuan.poa.webapp.common.DBConstant;
 import com.suyuan.poa.webapp.common.SearchParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
@@ -94,7 +92,7 @@ public class CodeDao extends CommonDao<CodeBean> {
                 getAllExtractor());
     }
 
-    public int count(SearchParam param, int codeTypeId, String codeNameLike) {
+    public int count(int codeTypeId, String codeNameLike) {
         // parameter
         List<Object> argList = new ArrayList<>();
 

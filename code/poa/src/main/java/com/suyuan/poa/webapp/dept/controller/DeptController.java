@@ -65,7 +65,7 @@ public class DeptController {
 
         int deptId = 0;
         if (id != null) {
-            deptId = id.intValue();
+            deptId = id;
         }
         List<DeptBean> subList = deptService.getSubDept(deptId);
 

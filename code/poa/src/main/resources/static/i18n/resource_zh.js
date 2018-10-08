@@ -15,6 +15,9 @@ $(function() {
 
         LOG_OUT_CONFIRM: '请确认是否注销？',
 
+        VALIDATION_MSG_NOT_EMPTY: '不能为空！',
+        VALIDATION_MSG_NUMERIC: '只能输入数字！',
+
         DEPT_NO_SELECTION: '请选择组织节点。',
         DEPT_DELETE_CONFIRM: '确定要删除组织？<br/>&nbsp;&nbsp;&nbsp;&nbsp;组织名：',
         USER_NO_SELECTION: '选择人员为空，请选择人员，然后点击保存。',
@@ -33,9 +36,6 @@ $(function() {
         OLD_NEW_PASSWORD_SAME: '新密码与旧密码相同，请输入与旧密码不同的新密码',
         CHANGE_PASSWORD_SUCCESS: '密码修改成功',
 
-        UPDATE_PROFILE_SUCCESS: '账号信息更新成功',
-        UPDATE_PROFILE_NAME: '姓名',
-        UPDATE_PROFILE_POLICE_NUMBER: '警号',
-        UPDATE_PROFILE_PHONE_NUMBER: '电话号码'
+        UPDATE_PROFILE_SUCCESS: '账号信息更新成功'
     };
 });

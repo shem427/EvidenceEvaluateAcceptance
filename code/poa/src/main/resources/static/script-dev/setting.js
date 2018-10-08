@@ -53,34 +53,77 @@ $(function() {
 
         // ------------------------------------- 我的账号 开始-------------------------------------------------
         initUpdateProfile: function() {
+            var form = $("#updateProfileForm");
+            $('#btnReset').click(function() {
+                form.trigger("reset");
+                form.data("bootstrapValidator").resetForm();
+            });
+            // 保存按钮事件
             $('#btnUpdateProfile').click(function() {
-                self._validateProfile();
+                var data = self._validateProfile();
+                if (!data) {
+                    return;
+                }
                 $.poa.ajax({
                     url: 'setting/updateProfile',
                     type: 'post',
                     dataType: 'json',
-                    data: {
-                        userId: $('#userId').val(),
-                        name: $('#userName').val(),
-                        policeNumber: $('#policeNumber').val(),
-                        phoneNumber: $('#phone').val()
-                    },
+                    data: data,
                     success: function() {
+                        $('#secUserName').text(data.name);
                         $.poa.messageBox.info($.poa.resource.UPDATE_PROFILE_SUCCESS);
                     }
                 });
             });
+            // Validation
+            form.bootstrapValidator({
+                message: 'value is not valid',
+                live: 'disabled',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    policeNumber: {
+                        validators: {
+                            notEmpty: {
+                                message: $.poa.resource.VALIDATION_MSG_NOT_EMPTY
+                            }
+                        }
+                    },
+                    userName: {
+                        validators: {
+                            notEmpty: {
+                                message: $.poa.resource.VALIDATION_MSG_NOT_EMPTY
+                            }
+                        }
+                    },
+                    phone: {
+                        validators: {
+                            numeric: {
+                                message: $.poa.resource.VALIDATION_MSG_NUMERIC
+                            },
+                            notEmpty: {
+                                message: $.poa.resource.VALIDATION_MSG_NOT_EMPTY
+                            }
+                        }
+                    }
+                }
+            });
         },
         _validateProfile: function() {
-            var profile = {
-                userId: $('#userId').val(),
-                name: $('#userName').val(),
-                policeNumber: $('#policeNumber').val(),
-                phoneNumber: $('#phone').val()
-            };
-            var ret = $('#updateProfileForm').validator('validate');
-
-            return ret;
+            var form = $("#updateProfileForm");
+            form.bootstrapValidator('validate');
+            if (form.data('bootstrapValidator').isValid()) {
+                return {
+                    userId: $('#userId').val(),
+                    name: $('#userName').val(),
+                    policeNumber: $('#policeNumber').val(),
+                    phoneNumber: $('#phone').val()
+                };
+            }
+            return null;
         }
         // ------------------------------------- 我的账号 结束-------------------------------------------------
     };

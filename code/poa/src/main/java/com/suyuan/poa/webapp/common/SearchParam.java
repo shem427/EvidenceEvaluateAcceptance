@@ -26,8 +26,4 @@ public class SearchParam {
 
         return sbSQL.toString();
     }
-
-    public enum SortOrder {
-        ASC, DESC
-    }
 }

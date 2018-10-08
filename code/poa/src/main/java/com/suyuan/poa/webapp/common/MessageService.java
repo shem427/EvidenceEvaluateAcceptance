@@ -14,10 +14,6 @@ import java.util.Locale;
  */
 @Component
 public class MessageService {
-
-    private String logEntry = null;
-    private String logExit = null;
-
     @Resource
     private MessageSource messageSource;
 
