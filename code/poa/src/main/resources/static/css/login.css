@@ -7,41 +7,45 @@
     font-size:60pt;
     font-weight:900;
     color:#0044CC;
-    margin-top:10%;
-    text-shadow:1px 1px 0px white,-1px -1px 0px black;
+    margin-top:10vh;
+    text-shadow:1px 1px 0 white,-1px -1px 0 black;
 }
 .left-logo {
     position:absolute;
-    top:300px;
+    top:18vh;
     left:240px;
     width:40px;
-    font-size:40pt;
+    font-size:30pt;
     font-weight:900;
     color:red;
     margin-top:40px;
     height:400px;
-    text-shadow:1px 1px 0px white,-1px -1px 0px black;
+    text-shadow:1px 1px 0 white,-1px -1px 0 black;
 }
 .right-logo {
     position:absolute;
-    top:300px;
+    top:18vh;
     right:240px;
     width:40px;
-    font-size:40pt;
+    font-size:30pt;
     font-weight:900;
     color:red;
     margin-top:40px;
     height:400px;
-    text-shadow:1px 1px 0px white,-1px -1px 0px black;
+    text-shadow:1px 1px 0 white,-1px -1px 0 black;
 }
 .bottom-logo {
     position:absolute;
     bottom:20px;
     left:350px;
-    tex-align: center;
+    text-align: center;
     font-size:25pt;
     font-weight:900;
     color:#0044CC;
     margin-top:40px;
-    text-shadow:1px 1px 0px white,-1px -1px 0px black;
+    text-shadow:1px 1px 0 white,-1px -1px 0 black;
+}
+.login-panel {
+    position: absolute;
+    top: 30vh;
 }
